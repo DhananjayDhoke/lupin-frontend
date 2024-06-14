@@ -1,0 +1,70 @@
+.bar{
+    height: 400px;
+    width: 800px;
+    margin: auto;
+  }
+
+  .addusermodel{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+
+  .addusermodel .modal-dialog {
+    max-width: 90%;
+    margin: 1.75rem auto;
+  }
+  
+  .addusermodel .modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .addusermodel .modal-header {
+    background-color: #00af4c;
+    color: white;
+    border-bottom: none;
+  }
+  
+  .addusermodel .modal-body .form-label {
+    font-weight: 600;
+  }
+  
+  .addusermodel .modal-body .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+  }
+  
+  .addusermodel .modal-body .form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+  
+  .addusermodel .modal-body .text-center {
+    margin-top: 2rem;
+  }
+  
+  .addusermodel .modal-body .btn {
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+  }
+
+  .campimage{
+    height: 120px;
+    width: 100px;
+    padding: 5px;
+}
+
+.show{
+  background-color: #e3e6e9;
+}
+  
+  
