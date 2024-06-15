@@ -361,45 +361,47 @@ const Dashboard = () => {
                   </div>
                   <hr />
                   {/* Bordered Table */}
-                  <table className="table table-striped newcss">
-                    <thead>
-                      <tr>
-                        <th>Doctor Name</th>
-                        <th>Rep Name</th>
-                        <th>Pathlab Name</th>
-                        <th>Camp Date</th>
-                        <th>Camp Venue</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {campReportList &&
-                        campReportList.length > 0 &&
-                        campReportList
-                          .slice(page * 5 - 5, page * 5)
-                          .map((e) => (
-                            <tr key={e.crid}>
-                              <td>{e.doctor_name}</td>
-                              <td>{e.rep_name}</td>
-                              <td>{e.pathlab_name}</td>
-                              <td>{e.camp_date}</td>
-                              <td>{e.camp_venue}</td>
+                  <div className="tbst">
+                    <table className="table table-striped newcss">
+                      <thead>
+                        <tr>
+                          <th>Doctor Name</th>
+                          <th>Rep Name</th>
+                          <th>Pathlab Name</th>
+                          <th>Camp Date</th>
+                          <th>Camp Venue</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {campReportList &&
+                          campReportList.length > 0 &&
+                          campReportList
+                            .slice(page * 5 - 5, page * 5)
+                            .map((e) => (
+                              <tr key={e.crid}>
+                                <td>{e.doctor_name}</td>
+                                <td>{e.rep_name}</td>
+                                <td>{e.pathlab_name}</td>
+                                <td>{e.camp_date}</td>
+                                <td>{e.camp_venue}</td>
 
-                              <td>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary rounded-pill"
-                                  onClick={() =>
-                                    handelSingalReportDownload(e.crid)
-                                  }
-                                >
-                                  <i className="ri-download-2-fill"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                    </tbody>
-                  </table>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary rounded-pill"
+                                    onClick={() =>
+                                      handelSingalReportDownload(e.crid)
+                                    }
+                                  >
+                                    <i className="ri-download-2-fill"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                      </tbody>
+                    </table>
+                  </div>
 
                   {/* { campReportList.length>0 && <div className="pagination">
                      <span onClick={()=>selectPageHandler(page-1)}>prev</span>

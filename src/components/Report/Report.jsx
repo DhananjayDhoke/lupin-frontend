@@ -904,56 +904,59 @@ const Report = () => {
                     </button>
                   </div>
                   <hr />
-                  <table className="table table-hover newcss">
-                    <thead>
-                      <tr>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Rep Name</th>
-                        <th scope="col">Pathlab Name</th>
-                        <th scope="col">Camp Date</th>
-                        <th scope="col">Camp Venue</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {campReportList &&
-                        campReportList.length > 0 &&
-                        campReportList
-                          .slice(page * 5 - 5, page * 5)
-                          .map((e) => (
-                            <tr key={e.crid}>
-                              <td>{e.doctor_name}</td>
-                              <td>{e.rep_name}</td>
-                              <td>{e.pathlab_name}</td>
-                              <td>{e.camp_date}</td>
-                              <td>{e.camp_venue}</td>
-                              <td>
-                                <button
-                                  className="btn btn-info btn-circle rounded-pill"
-                                  title="Info"
-                                  onClick={() => handelInfo(e.crid)}
-                                >
-                                  <i className="ri-information-2-line"></i>
-                                </button>
-                                <button
-                                  className="btn btn-dark rounded-pill ml-1"
-                                  title="Edit"
-                                  onClick={() => handleEdit(e.crid)}
-                                >
-                                  <i className="ri-edit-2-fill"></i>
-                                </button>
-                                <button
-                                  className="btn btn-danger rounded-pill ml-1"
-                                  title="Delete"
-                                  onClick={() => handelDelete(e.crid)}
-                                >
-                                  <i className="ri-delete-bin-2-fill"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                    </tbody>
-                  </table>
+                  <div className="tbst">
+                    <table className="table table-hover newcss">
+                      <thead>
+                        <tr>
+                          <th scope="col">Doctor Name</th>
+                          <th scope="col">Rep Name</th>
+                          <th scope="col">Pathlab Name</th>
+                          <th scope="col">Camp Date</th>
+                          <th scope="col">Camp Venue</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {campReportList &&
+                          campReportList.length > 0 &&
+                          campReportList
+                            .slice(page * 5 - 5, page * 5)
+                            .map((e) => (
+                              <tr key={e.crid}>
+                                <td>{e.doctor_name}</td>
+                                <td>{e.rep_name}</td>
+                                <td>{e.pathlab_name}</td>
+                                <td>{e.camp_date}</td>
+                                <td>{e.camp_venue}</td>
+                                <td>
+                                  <button
+                                    className="btn btn-info btn-circle rounded-pill"
+                                    title="Info"
+                                    onClick={() => handelInfo(e.crid)}
+                                  >
+                                    <i className="ri-information-2-line"></i>
+                                  </button>
+                                  <button
+                                    className="btn btn-dark rounded-pill ml-1"
+                                    title="Edit"
+                                    onClick={() => handleEdit(e.crid)}
+                                  >
+                                    <i className="ri-edit-2-fill"></i>
+                                  </button>
+                                  <button
+                                    className="btn btn-danger rounded-pill ml-1"
+                                    title="Delete"
+                                    onClick={() => handelDelete(e.crid)}
+                                  >
+                                    <i className="ri-delete-bin-2-fill"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                      </tbody>
+                    </table>
+                  </div>
+
                   {campReportList && campReportList.length > 0 && (
                     <div>
                       <div className="m-2 float-end">

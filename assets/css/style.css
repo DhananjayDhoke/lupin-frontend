@@ -1254,11 +1254,25 @@ h6 {
 .toggle-sidebar-btn{
   display: none;
 }
+.tbst{
+  overflow-x:auto;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
 @media (max-width: 767.98px) {
   .toggle-sidebar-btn{
     display: block;
   }
-  .table thead, .table tbody, .table tr, .table th, .table td {
+  /* .table thead, .table tbody, .table tr, .table th, .table td {
     display: block;
   }
 
@@ -1285,5 +1299,5 @@ h6 {
 
   .table td:last-child {
     border-bottom: 0;
-  }
+  } */
 }

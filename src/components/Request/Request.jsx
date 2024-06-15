@@ -719,72 +719,75 @@ const Request = () => {
                     </button>
                   </div>
                   <hr />
-                  <table className="table table-hover newcss">
-                    <thead>
-                      <tr>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Rep Name</th>
-                        <th scope="col">Pathlab Name</th>
-                        <th scope="col">Camp Date</th>
-                        <th scope="col">Camp Venue</th>
-                        <th scope="col">Request Status</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {campRequestList &&
-                        campRequestList.length > 0 &&
-                        campRequestList
-                          .slice(page * 5 - 5, page * 5)
-                          .map((e) => (
-                            <tr key={e.camp_req_id}>
-                              <td>{e.doctor_name}</td>
-                              <td>{e.rep_name}</td>
-                              <td>{e.pathlab_name}</td>
-                              <td>{e.camp_date}</td>
-                              <td>{e.camp_venue}</td>
-                              <td>
-                                {e.isApproved == "N" ? (
-                                  <span className="badge bg-warning">
-                                    Pending
-                                  </span>
-                                ) : e.isApproved == "Y" ? (
-                                  <span className="badge bg-success">
-                                    Approved
-                                  </span>
-                                ) : (
-                                  <span className="badge bg-danger">
-                                    Rejected
-                                  </span>
-                                )}
-                              </td>
-                              <td>
-                                <button
-                                  className="btn btn-info rounded-pill"
-                                  title="Info"
-                                  onClick={() => handelInfo(e.camp_req_id)}
-                                >
-                                  <i className="ri-information-2-line"></i>
-                                </button>
-                                <button
-                                  className="btn btn-dark rounded-pill ml-1"
-                                  title="Edit"
-                                  onClick={() => handleEdit(e.camp_req_id)}
-                                >
-                                  <i className="ri-edit-2-fill"></i>
-                                </button>
-                                <button
-                                  className="btn btn-danger rounded-pill ml-1"
-                                  title="Delete"
-                                  onClick={() => handelDelete(e.camp_req_id)}
-                                >
-                                  <i className="ri-delete-bin-2-fill"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                    </tbody>
-                  </table>
+                  <div className="tbst">
+                    <table className="table table-hover newcss">
+                      <thead>
+                        <tr>
+                          <th scope="col">Doctor Name</th>
+                          <th scope="col">Rep Name</th>
+                          <th scope="col">Pathlab Name</th>
+                          <th scope="col">Camp Date</th>
+                          <th scope="col">Camp Venue</th>
+                          <th scope="col">Request Status</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {campRequestList &&
+                          campRequestList.length > 0 &&
+                          campRequestList
+                            .slice(page * 5 - 5, page * 5)
+                            .map((e) => (
+                              <tr key={e.camp_req_id}>
+                                <td>{e.doctor_name}</td>
+                                <td>{e.rep_name}</td>
+                                <td>{e.pathlab_name}</td>
+                                <td>{e.camp_date}</td>
+                                <td>{e.camp_venue}</td>
+                                <td>
+                                  {e.isApproved == "N" ? (
+                                    <span className="badge bg-warning">
+                                      Pending
+                                    </span>
+                                  ) : e.isApproved == "Y" ? (
+                                    <span className="badge bg-success">
+                                      Approved
+                                    </span>
+                                  ) : (
+                                    <span className="badge bg-danger">
+                                      Rejected
+                                    </span>
+                                  )}
+                                </td>
+                                <td>
+                                  <button
+                                    className="btn btn-info rounded-pill"
+                                    title="Info"
+                                    onClick={() => handelInfo(e.camp_req_id)}
+                                  >
+                                    <i className="ri-information-2-line"></i>
+                                  </button>
+                                  <button
+                                    className="btn btn-dark rounded-pill ml-1"
+                                    title="Edit"
+                                    onClick={() => handleEdit(e.camp_req_id)}
+                                  >
+                                    <i className="ri-edit-2-fill"></i>
+                                  </button>
+                                  <button
+                                    className="btn btn-danger rounded-pill ml-1"
+                                    title="Delete"
+                                    onClick={() => handelDelete(e.camp_req_id)}
+                                  >
+                                    <i className="ri-delete-bin-2-fill"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                      </tbody>
+                    </table>
+                  </div>
+
                   {campRequestList && campRequestList.length > 0 && (
                     <div>
                       <div className="m-2 float-end">
