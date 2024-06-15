@@ -1235,3 +1235,55 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.bar {
+  width: 100% !important;
+  max-width: 800px !important;
+  margin: auto !important;
+  height: auto !important;
+}
+
+.bar canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+.toggle-sidebar-btn{
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .toggle-sidebar-btn{
+    display: block;
+  }
+  .table thead, .table tbody, .table tr, .table th, .table td {
+    display: block;
+  }
+
+  .table tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 0.75rem;
+    font-weight: bold;
+    text-align: left;
+    background-color: #f8f9fa;
+  }
+
+  .table td:last-child {
+    border-bottom: 0;
+  }
+}

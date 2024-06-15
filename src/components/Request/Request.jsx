@@ -8,8 +8,6 @@ import "../Dashboard/Dashboard.css";
 import { BASEURL } from "../constant/constant";
 import toast from "react-hot-toast";
 const Request = () => {
-  
-
   const userId = sessionStorage.getItem("userId");
   // data for select tag
   const [isLoading, setIsLoading] = useState(false);
@@ -61,13 +59,13 @@ const Request = () => {
   const [delId, setDelId] = useState("");
   const [editId, setEditId] = useState("");
 
-  const [requestStatus, setRequestStatus] = useState('');
+  const [requestStatus, setRequestStatus] = useState("");
 
   // for filter result
 
- const [filterBy, setFilterBy] = useState('');
- const [startDate, setStartDate] = useState('');
- const [endDate, setEndDate] = useState('');
+  const [filterBy, setFilterBy] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const handelAddRequest = () => {
     setAddRequestModel(true);
@@ -162,14 +160,12 @@ const Request = () => {
         // Handle the case where no data is returned or an error occurred
         toast.error("Failed to fetch details for the camp request.");
         //alert("Failed to fetch details for the camp request.");
-
       }
     } catch (error) {
       // Handle any errors that occur during the API call
       console.error("Failed to fetch camp request details:", error);
       toast.error("Error fetching camp request details.");
       //alert("Error fetching camp request details.");
-
     }
   };
 
@@ -183,7 +179,7 @@ const Request = () => {
 
       console.log("inside delete", res);
       if (res.data.errorCode == "1") {
-         toast.success("Camp Request Deleted Successfully");
+        toast.success("Camp Request Deleted Successfully");
         //alert("Camp Request Deleted Successfully");
 
         await getCampRequestList();
@@ -194,7 +190,7 @@ const Request = () => {
       }
     } catch (error) {
       toast.error(error.message);
-     //alert(error.message)
+      //alert(error.message)
     }
   };
 
@@ -217,15 +213,18 @@ const Request = () => {
     try {
       const res = await axios.post(
         `${BASEURL}/campRequest/getCampRequest?searchName=${searchQuery}`,
-        { campTypeId: listCampType, userId: userId,startDate,
+        {
+          campTypeId: listCampType,
+          userId: userId,
+          startDate,
           endDate,
-          filterBy }
+          filterBy,
+        }
       );
 
       if (res?.data?.errorCode == "1") {
         setCampRequestList(res?.data?.data);
         setCampRequestList1(res?.data?.data);
-
       }
     } catch (error) {
       console.log(error);
@@ -234,7 +233,7 @@ const Request = () => {
 
   useEffect(() => {
     getCampRequestList();
-  }, [listCampType, searchQuery,filterBy,startDate,endDate]);
+  }, [listCampType, searchQuery, filterBy, startDate, endDate]);
 
   // for get camp type
 
@@ -386,7 +385,7 @@ const Request = () => {
     ) {
       toast.error("Missing Required Field");
       //alert("Missing Required Field");
-      
+
       return;
     }
     // if(abmContact.length !== 10){
@@ -423,7 +422,7 @@ const Request = () => {
 
       if (res?.data?.errorCode == "1") {
         toast.success("Camp Request Added Successfully");
-        
+
         await getCampRequestList();
         setCampType("");
         setCampName("");
@@ -450,10 +449,10 @@ const Request = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Error in creating camp request")
+      toast.error("Error in creating camp request");
     } finally {
-      setIsLoading(false); 
-      setAddRequestModel(false);// Stop loading
+      setIsLoading(false);
+      setAddRequestModel(false); // Stop loading
     }
 
     // console.log(campType, repId , doctorId, pathlab ,
@@ -551,64 +550,65 @@ const Request = () => {
     }
   };
 
-  const handelRequestStatus = async(e)=>{
+  const handelRequestStatus = async (e) => {
     const reqStatus = e.target.value;
     //console.log("reqstatus",reqStatus);
-    if(!reqStatus){
-      setRequestStatus(reqStatus)
+    if (!reqStatus) {
+      setRequestStatus(reqStatus);
       await getCampRequestList();
       return;
     }
-    const selectedData = campRequestList1.filter((e)=> e.isApproved === reqStatus);
-    console.log("selected data",selectedData)
-    if(selectedData){
-      setCampRequestList(selectedData)
-      setRequestStatus(reqStatus)
+    const selectedData = campRequestList1.filter(
+      (e) => e.isApproved === reqStatus
+    );
+    console.log("selected data", selectedData);
+    if (selectedData) {
+      setCampRequestList(selectedData);
+      setRequestStatus(reqStatus);
     }
-  }
+  };
 
-  const handleFilter = (e)=>{
-    
-    setFilterBy(e.target.value)
-  }
+  const handleFilter = (e) => {
+    setFilterBy(e.target.value);
+  };
 
   // pagination logic
 
- const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
- const selectPageHandler = (selectedPage)=>{
- 
-   if(selectedPage>=1 && selectedPage<= Math.ceil(campRequestList.length/5) && page!== selectedPage)
-   setPage(selectedPage)
- }
+  const selectPageHandler = (selectedPage) => {
+    if (
+      selectedPage >= 1 &&
+      selectedPage <= Math.ceil(campRequestList.length / 5) &&
+      page !== selectedPage
+    )
+      setPage(selectedPage);
+  };
 
- const handelReportDownload = () => {
-  // Define custom column headers
-  console.log(campRequestList)
-  const headers = [
-    "Doctor Name",
-    "PathLab Name",
-    "Representative Name",
-    "Camp Date",
-    "Camp Venue",
-  ];
+  const handelReportDownload = () => {
+    // Define custom column headers
+    console.log(campRequestList);
+    const headers = [
+      "Doctor Name",
+      "PathLab Name",
+      "Representative Name",
+      "Camp Date",
+      "Camp Venue",
+    ];
 
+    const mappedData = campRequestList.map((item) => ({
+      "Doctor Name": item.doctor_name,
+      "PathLab Name": item.pathlab_name,
+      "Representative Name": item.rep_name,
+      "Camp Date": item.camp_date,
+      "Camp Venue": item.camp_venue,
+    }));
 
- 
-  const mappedData = campRequestList.map((item) => ({
-    "Doctor Name" : item.doctor_name,
-    "PathLab Name" : item.pathlab_name,
-    "Representative Name" : item.rep_name,
-    "Camp Date" : item.camp_date,
-    "Camp Venue" : item.camp_venue,
-  }));
-
-  const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Data");
-  XLSX.writeFile(wb, "AllRequest.xlsx");
-};
-
+    const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Data");
+    XLSX.writeFile(wb, "AllRequest.xlsx");
+  };
 
   return (
     <>
@@ -636,9 +636,10 @@ const Request = () => {
                 </div>
               </form>
               <div className="dropdown mt-4" style={{ marginLeft: "1%" }}>
-                <select className="form-control selectStyle"
-                onChange={handleFilter}
-                value={filterBy}
+                <select
+                  className="form-control selectStyle"
+                  onChange={handleFilter}
+                  value={filterBy}
                 >
                   <option value="">Select filter</option>
                   <option value="month">Month Wise</option>
@@ -677,7 +678,6 @@ const Request = () => {
                   <option value="N">Pending</option>
                   <option value="Y">Approved</option>
                   <option value="R">Rejected</option>
-                  
                 </select>
               </div>
 
@@ -705,13 +705,15 @@ const Request = () => {
                   <div className="m-3">
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success mt-2"
                       onClick={handelAddRequest}
                     >
                       <i className="bx bx-plus"></i> New Request
                     </button>
-                    <button type="button" className="btn btn-success ml-1"
-                     onClick={handelReportDownload}
+                    <button
+                      type="button"
+                      className="btn btn-success ml-1 mt-2"
+                      onClick={handelReportDownload}
                     >
                       <i className="bx bx-cloud-download"></i> Download Request
                     </button>
@@ -732,101 +734,115 @@ const Request = () => {
                     <tbody>
                       {campRequestList &&
                         campRequestList.length > 0 &&
-                        campRequestList.slice(page*5-5,page*5).map((e) => (
-                          <tr key={e.camp_req_id}>
-                            <td>{e.doctor_name}</td>
-                            <td>{e.rep_name}</td>
-                            <td>{e.pathlab_name}</td>
-                            <td>{e.camp_date}</td>
-                            <td>{e.camp_venue}</td>
-                            <td>
-                              {e.isApproved == "N" ? (
-                                <span className="badge bg-warning">
-                                  Pending
-                                </span>
-                              ) : e.isApproved == "Y" ? (
-                                
+                        campRequestList
+                          .slice(page * 5 - 5, page * 5)
+                          .map((e) => (
+                            <tr key={e.camp_req_id}>
+                              <td>{e.doctor_name}</td>
+                              <td>{e.rep_name}</td>
+                              <td>{e.pathlab_name}</td>
+                              <td>{e.camp_date}</td>
+                              <td>{e.camp_venue}</td>
+                              <td>
+                                {e.isApproved == "N" ? (
+                                  <span className="badge bg-warning">
+                                    Pending
+                                  </span>
+                                ) : e.isApproved == "Y" ? (
                                   <span className="badge bg-success">
                                     Approved
                                   </span>
-                                
-                              ):(
-                                
-                                <span className="badge bg-danger">
-                                  Rejected
-                                </span>
-                              
-                            )}
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-info rounded-pill"
-                                title="Info"
-                                onClick={() => handelInfo(e.camp_req_id)}
-                              >
-                                <i className="ri-information-2-line"></i>
-                              </button>
-                              <button
-                                className="btn btn-dark rounded-pill ml-1"
-                                title="Edit"
-                                onClick={() => handleEdit(e.camp_req_id)}
-                              >
-                                <i className="ri-edit-2-fill"></i>
-                              </button>
-                              <button
-                                className="btn btn-danger rounded-pill ml-1"
-                                title="Delete"
-                                
-                                onClick={() => handelDelete(e.camp_req_id)}
-                              >
-                                <i className="ri-delete-bin-2-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                                ) : (
+                                  <span className="badge bg-danger">
+                                    Rejected
+                                  </span>
+                                )}
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-info rounded-pill"
+                                  title="Info"
+                                  onClick={() => handelInfo(e.camp_req_id)}
+                                >
+                                  <i className="ri-information-2-line"></i>
+                                </button>
+                                <button
+                                  className="btn btn-dark rounded-pill ml-1"
+                                  title="Edit"
+                                  onClick={() => handleEdit(e.camp_req_id)}
+                                >
+                                  <i className="ri-edit-2-fill"></i>
+                                </button>
+                                <button
+                                  className="btn btn-danger rounded-pill ml-1"
+                                  title="Delete"
+                                  onClick={() => handelDelete(e.camp_req_id)}
+                                >
+                                  <i className="ri-delete-bin-2-fill"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                     </tbody>
                   </table>
+                  {campRequestList && campRequestList.length > 0 && (
+                    <div>
+                      <div className="m-2 float-end">
+                        {/* <h5 className="card-title">Pagination with icon</h5> */}
+
+                        <nav aria-label="Page navigation example">
+                          <ul className="pagination">
+                            <li
+                              className="page-item"
+                              onClick={() => selectPageHandler(page - 1)}
+                            >
+                              <span className="page-link" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </span>
+                            </li>
+                            {[
+                              ...Array(Math.ceil(campRequestList.length / 5)),
+                            ].map((_, i) => {
+                              return (
+                                <li
+                                  className="page-item"
+                                  onClick={() => selectPageHandler(i + 1)}
+                                  key={i}
+                                >
+                                  <span
+                                    className={`page-link ${
+                                      page === i + 1 ? "show" : ""
+                                    }`}
+                                  >
+                                    {i + 1}
+                                  </span>
+                                </li>
+                              );
+                            })}
+                            {/* <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className="page-link" >{i+1}</span></li> */}
+                            <li
+                              className="page-item"
+                              onClick={() => selectPageHandler(page + 1)}
+                            >
+                              <span className="page-link" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </span>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                { campRequestList && campRequestList.length> 0 && <div className="card">
-              <div className="card-body">
-              {/* <h5 className="card-title">Pagination with icon</h5> */}
-
-              
-              <nav aria-label="Page navigation example">
-                <ul className="pagination">
-                  <li className="page-item" onClick={()=>selectPageHandler(page-1)}>
-                    <span className="page-link"  aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </span>
-                  </li>
-                  {[...Array(Math.ceil(campRequestList.length / 5))].map((_, i) => {
-                     return   <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className={`page-link ${page === i+1 ? "show" : ""}`} >{i+1}</span></li>
-                     })}
-                  {/* <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className="page-link" >{i+1}</span></li> */}
-                  <li className="page-item" onClick={()=>selectPageHandler(page+1)}>
-                    <span className="page-link" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </span>
-                  </li>
-                </ul>
-              </nav>
-
-            </div>
-                 </div>}
-
               </div>
             </div>
           </div>
         </section>
-
       </main>
 
       {infoRequestModel && (
         <div className="addusermodel">
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-          >
+          <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
               <div className="modal-content">
                 <div className="modal-header">
@@ -1016,10 +1032,7 @@ const Request = () => {
 
       {addRequestModel && (
         <div className="addusermodel">
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-          >
+          <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
               <div className="modal-content">
                 <div className="modal-header">
@@ -1032,75 +1045,100 @@ const Request = () => {
                 </div>
                 <div className="modal-body">
                   <form className="row g-3" onSubmit={handleAddSubmit}>
-                  <div className="form-group col-md-4">
+                    <div className="form-group col-md-4">
                       <label className="form-label">Type of Camp</label>
-                        <select className="form-control"
-                           onChange={(event)=>{
-                            setCampName(event.target.options[event.target.selectedIndex].getAttribute('data-campname'));
-                            setCampType(event.target.value)
-                           }}
-
-                           value={campType}
-                        >
-                          <option value="">Select...</option>
-                          {campList.map((e)=>(
-                            <option data-campname ={e.camp_name} key={e.camp_id} value={e.camp_id}>{e.camp_name}</option>
-                          ))}
-                        </select>
+                      <select
+                        className="form-control"
+                        onChange={(event) => {
+                          setCampName(
+                            event.target.options[
+                              event.target.selectedIndex
+                            ].getAttribute("data-campname")
+                          );
+                          setCampType(event.target.value);
+                        }}
+                        value={campType}
+                      >
+                        <option value="">Select...</option>
+                        {campList.map((e) => (
+                          <option
+                            data-campname={e.camp_name}
+                            key={e.camp_id}
+                            value={e.camp_id}
+                          >
+                            {e.camp_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Pathlab</label>
-                        <select className="form-control"
+                      <select
+                        className="form-control"
                         //  onChange={(e)=>{
                         //   setPathlab(e.target.value)
                         // }}
 
                         onChange={handelPathlabChange}
-
                         value={pathlab}
-                        >
-                          <option value="">Select...</option>
-                          {pathlabList.map((e)=>(
-                            <option key={e.pathlab_id} value={e.pathlab_id}>{e.pathlab_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {pathlabList.map((e) => (
+                          <option key={e.pathlab_id} value={e.pathlab_id}>
+                            {e.pathlab_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="form-label">Name of Marketing Head</label>
-                        <select className="form-control"
-                        onChange={(e)=>{
-                          setMarketingHeadEamil(e.target.options[e.target.selectedIndex].getAttribute('data-email'));
-        
+                      <label className="form-label">
+                        Name of Marketing Head
+                      </label>
+                      <select
+                        className="form-control"
+                        onChange={(e) => {
+                          setMarketingHeadEamil(
+                            e.target.options[
+                              e.target.selectedIndex
+                            ].getAttribute("data-email")
+                          );
+
                           setMarketingHeadId(e.target.value);
                         }}
-
                         value={marketingHeadId}
-                        >
-                          <option value="">Select...</option>
-                          {marketingHeadList.map((e)=>(
-                            <option  data-email={e.email} key={e.mhid} value={e.mhid}>{e.name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {marketingHeadList.map((e) => (
+                          <option
+                            data-email={e.email}
+                            key={e.mhid}
+                            value={e.mhid}
+                          >
+                            {e.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Rep</label>
-                        <select className="form-control"
+                      <select
+                        className="form-control"
                         onChange={handelRepresentativeChange}
-
                         value={repId}
-                        >
-                          <option value="">Select...</option>
-                          {representativeList.map((e)=>(
-                            <option key={e.rep_id} value={e.rep_id}>{e.rep_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {representativeList.map((e) => (
+                          <option key={e.rep_id} value={e.rep_id}>
+                            {e.rep_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="form-label">Contact No Of Rep</label>
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="contact"
                         value={repMobile}
                         readOnly
@@ -1111,7 +1149,6 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="email"
                         value={repEmail}
                         readOnly
@@ -1122,11 +1159,10 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                       
                         placeholder="zone"
-                        onChange={(e)=>{
-                          setRepZone(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepZone(e.target.value);
+                        }}
                         value={repZone}
                       />
                     </div>
@@ -1135,11 +1171,10 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="state"
-                        onChange={(e)=>{
-                          setRepState(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepState(e.target.value);
+                        }}
                         value={repState}
                       />
                     </div>
@@ -1148,48 +1183,48 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        onChange={(e)=>{
-                          setRepHq(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepHq(e.target.value);
+                        }}
                         placeholder="Hq"
                         value={repHq}
                       />
                     </div>
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Doctor</label>
-                        <select className="form-control"
-                         onChange={handelDoctorChange}
-
+                      <select
+                        className="form-control"
+                        onChange={handelDoctorChange}
                         value={doctorId}
-                        >
-                          <option value="">Select...</option>
-                          {doctorList.map((e)=>(
-                            <option key={e.cdoc_id} value={e.cdoc_id}>{e.doctor_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {doctorList.map((e) => (
+                          <option key={e.cdoc_id} value={e.cdoc_id}>
+                            {e.doctor_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                   
-                   
+
                     <div className="form-group col-md-4">
                       <label className="form-label">Degree of Doctor</label>
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="Doctor Degree"
                         value={doctorQualification}
                         readOnly
                       />
                     </div>
-                    
+
                     <div className="form-group col-md-4">
                       <label className="form-label">Date of Camp</label>
                       <input
                         type="date"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampDate(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampDate(e.target.value);
+                        }}
                         placeholder="Camp Date"
                         value={campDate}
                       />
@@ -1199,9 +1234,9 @@ const Request = () => {
                       <input
                         type="time"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampTime(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampTime(e.target.value);
+                        }}
                         placeholder="Camp Time"
                         value={campTime}
                       />
@@ -1211,37 +1246,36 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                         onChange={(e)=>{
-                          setCampVenue(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampVenue(e.target.value);
+                        }}
                         placeholder="Camp Venue"
                         value={campVenue}
                       />
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="form-label">No. of Patients Expected</label>
+                      <label className="form-label">
+                        No. of Patients Expected
+                      </label>
                       <input
                         type="number"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampPatients(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampPatients(e.target.value);
+                        }}
                         placeholder="Patients No."
                         value={campPatients}
                       />
                     </div>
 
-                   
-
-                  
                     <div className="form-group col-md-4">
                       <label className="form-label">Contact No of ABM</label>
                       <input
                         type="number"
                         className="form-control"
                         placeholder="Contact No."
-                        onChange={(e)=>{
-                          setAbmContact(e.target.value)
+                        onChange={(e) => {
+                          setAbmContact(e.target.value);
                         }}
                         value={abmContact}
                       />
@@ -1254,20 +1288,27 @@ const Request = () => {
             Reset
           </button>
         </div> */}
-                  <div className="text-center">
-                    {isLoading ?  <ThreeDots
-                      visible={true}
-                      height="80"
-                      width="80"
-                      color="#4fa94d"
-                      radius="9"
-                      ariaLabel="three-dots-loading"
-                      wrapperStyle={{justifyContent: "center"}}
-                      wrapperClass="mx-auto"
-                      /> : <button type="submit" className="btn btn-success mx-auto">Submit
-                    </button>}
-                    
-                  </div>
+                    <div className="text-center">
+                      {isLoading ? (
+                        <ThreeDots
+                          visible={true}
+                          height="80"
+                          width="80"
+                          color="#4fa94d"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{ justifyContent: "center" }}
+                          wrapperClass="mx-auto"
+                        />
+                      ) : (
+                        <button
+                          type="submit"
+                          className="btn btn-success mx-auto"
+                        >
+                          Submit
+                        </button>
+                      )}
+                    </div>
                   </form>
                 </div>
               </div>
@@ -1295,77 +1336,102 @@ const Request = () => {
                 </div>
                 <div className="modal-body">
                   <form className="row g-3" onSubmit={handleEditSubmit}>
-                  <div className="form-group col-md-4">
+                    <div className="form-group col-md-4">
                       <label className="form-label">Type of Camp</label>
-                        <select className="form-control"
-                           onChange={(event)=>{
-                             setCampType(event.target.value)
-                             setCampName(event.target.options[event.target.selectedIndex].getAttribute('data-campname'));
-                           }}
-
-                           value={campType}
-                        >
-                          <option value="">Select...</option>
-                          {campList.map((e)=>(
-                            <option data-campname = {e.camp_name} key={e.camp_id} value={e.camp_id}>{e.camp_name}</option>
-                          ))}
-                        </select>
+                      <select
+                        className="form-control"
+                        onChange={(event) => {
+                          setCampType(event.target.value);
+                          setCampName(
+                            event.target.options[
+                              event.target.selectedIndex
+                            ].getAttribute("data-campname")
+                          );
+                        }}
+                        value={campType}
+                      >
+                        <option value="">Select...</option>
+                        {campList.map((e) => (
+                          <option
+                            data-campname={e.camp_name}
+                            key={e.camp_id}
+                            value={e.camp_id}
+                          >
+                            {e.camp_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Pathlab</label>
-                        <select className="form-control"
+                      <select
+                        className="form-control"
                         //  onChange={(e)=>{
                         //   setPathlab(e.target.value)
                         // }}
                         onChange={handelPathlabChange}
-
                         value={pathlab}
-                        >
-                          <option value="">Select...</option>
-                          {pathlabList.map((e)=>(
-                            <option key={e.pathlab_id} value={e.pathlab_id}>{e.pathlab_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {pathlabList.map((e) => (
+                          <option key={e.pathlab_id} value={e.pathlab_id}>
+                            {e.pathlab_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div className="form-group col-md-4">
-                      <label className="form-label">Name of Marketing Head</label>
-                        <select className="form-control"
-                        onChange={(e)=>{
-                          setMarketingHeadEamil(e.target.options[e.target.selectedIndex].getAttribute('data-email'));
-        
+                      <label className="form-label">
+                        Name of Marketing Head
+                      </label>
+                      <select
+                        className="form-control"
+                        onChange={(e) => {
+                          setMarketingHeadEamil(
+                            e.target.options[
+                              e.target.selectedIndex
+                            ].getAttribute("data-email")
+                          );
+
                           setMarketingHeadId(e.target.value);
                         }}
-
                         value={marketingHeadId}
-                        >
-                          <option value="">Select...</option>
-                          {marketingHeadList.map((e)=>(
-                            <option  data-email={e.email} key={e.mhid} value={e.mhid}>{e.name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {marketingHeadList.map((e) => (
+                          <option
+                            data-email={e.email}
+                            key={e.mhid}
+                            value={e.mhid}
+                          >
+                            {e.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Rep</label>
-                        <select className="form-control"
+                      <select
+                        className="form-control"
                         onChange={handelRepresentativeChange}
-
                         value={repId}
-                        >
-                          <option value="">Select...</option>
-                          {representativeList.map((e)=>(
-                            <option key={e.rep_id} value={e.rep_id}>{e.rep_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {representativeList.map((e) => (
+                          <option key={e.rep_id} value={e.rep_id}>
+                            {e.rep_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group col-md-4">
                       <label className="form-label">Contact No Of Rep</label>
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="contact"
                         value={repMobile}
                         readOnly
@@ -1376,24 +1442,21 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="email"
                         value={repEmail}
                         readOnly
                       />
                     </div>
 
-
-                      <div className="form-group col-md-4">
+                    <div className="form-group col-md-4">
                       <label className="form-label">Zone</label>
                       <input
                         type="text"
                         className="form-control"
-                       
                         placeholder="zone"
-                        onChange={(e)=>{
-                          setRepZone(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepZone(e.target.value);
+                        }}
                         value={repZone}
                       />
                     </div>
@@ -1402,11 +1465,10 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="state"
-                        onChange={(e)=>{
-                          setRepState(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepState(e.target.value);
+                        }}
                         value={repState}
                       />
                     </div>
@@ -1415,9 +1477,9 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                        onChange={(e)=>{
-                          setRepHq(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setRepHq(e.target.value);
+                        }}
                         placeholder="Hq"
                         value={repHq}
                       />
@@ -1425,39 +1487,39 @@ const Request = () => {
 
                     <div className="form-group col-md-4">
                       <label className="form-label">Name of Doctor</label>
-                        <select className="form-control"
-                         onChange={handelDoctorChange}
-
+                      <select
+                        className="form-control"
+                        onChange={handelDoctorChange}
                         value={doctorId}
-                        >
-                          <option value="">Select...</option>
-                          {doctorList.map((e)=>(
-                            <option key={e.cdoc_id} value={e.cdoc_id}>{e.doctor_name}</option>
-                          ))}
-                        </select>
+                      >
+                        <option value="">Select...</option>
+                        {doctorList.map((e) => (
+                          <option key={e.cdoc_id} value={e.cdoc_id}>
+                            {e.doctor_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                   
-                    
+
                     <div className="form-group col-md-4">
                       <label className="form-label">Degree of Doctor</label>
                       <input
                         type="text"
                         className="form-control"
-                        
                         placeholder="Doctor Degree"
                         value={doctorQualification}
                         readOnly
                       />
                     </div>
-                    
+
                     <div className="form-group col-md-4">
                       <label className="form-label">Date of Camp</label>
                       <input
                         type="date"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampDate(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampDate(e.target.value);
+                        }}
                         placeholder="Camp Date"
                         value={campDate}
                       />
@@ -1467,9 +1529,9 @@ const Request = () => {
                       <input
                         type="time"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampTime(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampTime(e.target.value);
+                        }}
                         placeholder="Camp Time"
                         value={campTime}
                       />
@@ -1479,55 +1541,61 @@ const Request = () => {
                       <input
                         type="text"
                         className="form-control"
-                         onChange={(e)=>{
-                          setCampVenue(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampVenue(e.target.value);
+                        }}
                         placeholder="Camp Venue"
                         value={campVenue}
                       />
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="form-label">No. of Patients Expected</label>
+                      <label className="form-label">
+                        No. of Patients Expected
+                      </label>
                       <input
                         type="number"
                         className="form-control"
-                        onChange={(e)=>{
-                          setCampPatients(e.target.value)
-                         }}
+                        onChange={(e) => {
+                          setCampPatients(e.target.value);
+                        }}
                         placeholder="Patients No."
                         value={campPatients}
                       />
                     </div>
 
-                  
-
-                    
                     <div className="form-group col-md-4">
                       <label className="form-label">Contact No of ABM</label>
                       <input
                         type="number"
                         className="form-control"
                         placeholder="Contact No."
-                        onChange={(e)=>{
-                          setAbmContact(e.target.value)
+                        onChange={(e) => {
+                          setAbmContact(e.target.value);
                         }}
                         value={abmContact}
                       />
                     </div>
-                  <div className="text-center">
-                    {isLoading ?  <ThreeDots
-                      visible={true}
-                      height="80"
-                      width="80"
-                      color="#4fa94d"
-                      radius="9"
-                      ariaLabel="three-dots-loading"
-                      wrapperStyle={{justifyContent: "center"}}
-                      wrapperClass="mx-auto"
-                      /> : <button type="submit" className="btn btn-success mx-auto">Submit
-                    </button>}
-                    
-                  </div>
+                    <div className="text-center">
+                      {isLoading ? (
+                        <ThreeDots
+                          visible={true}
+                          height="80"
+                          width="80"
+                          color="#4fa94d"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{ justifyContent: "center" }}
+                          wrapperClass="mx-auto"
+                        />
+                      ) : (
+                        <button
+                          type="submit"
+                          className="btn btn-success mx-auto"
+                        >
+                          Submit
+                        </button>
+                      )}
+                    </div>
                   </form>
                 </div>
               </div>
