@@ -5,7 +5,60 @@
 .mt-1{
     margin-top: 50px !important;
 }
+input[type=text]:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+}
+.form-control:focus {
 
+ outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+input.form-control[readonly] {
+  background-color: #fff !important; /* Replace with the color of your choice */
+
+}
+input.form-control[disabled] {
+  background-color: #fff !important; /* Replace with the color of your choice */
+
+}
+.bg-success{
+  background-image: linear-gradient(to bottom,#198754,#0d4e30);
+}
+.bg-warning{
+  background-image: linear-gradient(to bottom,#f1c515,#a18204);
+}
+.btn-primary {
+  color: #fff;
+ border:none;
+  background-image: linear-gradient(to bottom,#00a5cf,#004e64);
+}
+.btn-success {
+  background-image: linear-gradient(to bottom,#175a44,#219c8c);
+}
+.btn-info {
+ color: #fff;
+ border:none;
+  background-image: linear-gradient(to bottom, #6699cc, #074450);
+}
+.btn-danger {
+  color: #fff;
+  border:none;
+   background-image: linear-gradient(to bottom, #d30303, #3a0101);
+ }
+ .btn-dark {
+  color: #fff;
+  border:none;
+   background-image: linear-gradient(to bottom, #34a0a4, #143a3b);
+ }
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
 .did-floating-label-content { 
     position:relative; 
     margin-bottom:20px; 
@@ -17,7 +70,7 @@
     position:absolute;
     pointer-events:none;
     left:15px;
-    top:10px;
+    top:7px;
     padding:0 5px;
     background:#fff;
     transition:0.2s ease all; 
@@ -38,7 +91,7 @@
     &:focus{
       outline:none;
       ~ .did-floating-label{
-        top:-8px;
+        top:-13px;
         font-size:13px;
       }
     }
@@ -54,11 +107,11 @@
   }
   
   .did-floating-input:not(:placeholder-shown) ~ .did-floating-label {
-    top:-8px;
+    top:-11px;
     font-size:13px;
   }
   .did-floating-select:not([value=""]):valid ~ .did-floating-label {
-    top:-8px;
+    top:-11px;
     font-size:13px;
   }
   .did-floating-select[value=""]:focus ~ .did-floating-label {

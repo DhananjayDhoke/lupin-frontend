@@ -20,6 +20,7 @@ body {
 }
 .newcss th{
   background-color: #00a237 !important;
+  background-image: linear-gradient(to bottom,#02832d ,#023513 );
   color: #fff !important;
 }
 a {
@@ -386,6 +387,7 @@ h6 {
   height: 60px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #00a237;
+  background-image: linear-gradient(to bottom,#023D54,#006600);
   padding-left: 20px;
   /* Toggle Sidebar Button */
   /* Search Bar */
@@ -609,12 +611,13 @@ h6 {
   width: 300px;
   z-index: 996;
   transition: all 0.3s;
-  padding: 20px;
+  padding: 20px 0px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: #ffffff;
+  background-color: #024a1a;
+  background-image: linear-gradient(to bottom,#024a1a,#030805);
 }
 
 @media (max-width: 1199px) {
@@ -688,26 +691,27 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #00a237;
+  color: #fff;
   transition: 0.3;
-  background: #f6f9ff;
+  background: #00a237;
+  background-image: linear-gradient(to right,#015f21 , #00a237 );
   padding: 10px 15px;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #00a237;
+  color: #fff;
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #012970;
-  background: #fff;
+  color: #ffffff;
+  background: #fff0;
 }
 
 .sidebar-nav .nav-link.collapsed i {
-  color: #899bbd;
+  color: #ffffff;
 }
 
 .sidebar-nav .nav-link:hover {

@@ -72,15 +72,15 @@ const Dashboard = () => {
     datasets: [
       {
         label: "Camp Request Count",
-        backgroundColor: "#5F4B8BFF",
-        borderColor: "#5F4B8BFF",
+        backgroundColor: "#99c2a2",
+        borderColor: "#99c2a2",
         borderWidth: 2,
         data: [],
       },
       {
         label: "Camp Report Count",
-        backgroundColor: "#E69A8DFF",
-        borderColor: "#E69A8DFF",
+        backgroundColor: "#5b8266",
+        borderColor: "#5b8266",
         borderWidth: 2,
         data: [],
       },
@@ -211,7 +211,7 @@ const Dashboard = () => {
     const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    const rn = Math.floor(Math.random() * 1000) + 1
+    const rn = Math.floor(Math.random() * 1000) + 1;
     XLSX.writeFile(wb, `Lupin_AllReport_${rn}.xlsx`);
   };
 
@@ -250,7 +250,7 @@ const Dashboard = () => {
     const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    const rn = Math.floor(Math.random() * 1000) + 1
+    const rn = Math.floor(Math.random() * 1000) + 1;
     XLSX.writeFile(wb, `Lupin_Report_${rn}.xlsx`);
   };
 
