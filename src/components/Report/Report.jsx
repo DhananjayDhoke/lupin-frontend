@@ -21,11 +21,11 @@ const Report = () => {
   const [brandId, setBrandId] = useState("");
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [feedback, setFeedback] = useState("");
-  
-  const [campTypeName, setCampTypeName] = useState('');
-  const [pathlabName,setPathlabName] = useState('');
-  const [repName, setRepName] = useState('');
-  const [doctorName, setDoctorName] = useState('');
+
+  const [campTypeName, setCampTypeName] = useState("");
+  const [pathlabName, setPathlabName] = useState("");
+  const [repName, setRepName] = useState("");
+  const [doctorName, setDoctorName] = useState("");
 
   const [screenedCount, setScreenedCount] = useState(null);
   const [prescriptionCount, setPrescriptionCount] = useState(null);
@@ -464,11 +464,11 @@ const Report = () => {
         setCampTime("");
         setCampPatients("");
         setDoctorQualification("");
-  
-        setCampTypeName('');
-        setRepName('');
-        setPathlabName('');
-        setDoctorName('');
+
+        setCampTypeName("");
+        setRepName("");
+        setPathlabName("");
+        setDoctorName("");
 
         const formData = new FormData();
         selectedFiles.forEach((file) => {
@@ -821,7 +821,7 @@ const Report = () => {
     if (!event.target.value) {
       //console.log("insid empty here")
       setCampRequstData("");
-     
+
       setCampReqId("");
       setCampType("");
       setRepId("");
@@ -833,10 +833,10 @@ const Report = () => {
       setCampPatients("");
       setDoctorQualification("");
 
-      setCampTypeName('');
-      setRepName('');
-      setPathlabName('');
-      setDoctorName('');
+      setCampTypeName("");
+      setRepName("");
+      setPathlabName("");
+      setDoctorName("");
     }
 
     const requestData = campRequestList.find(
@@ -1216,7 +1216,7 @@ const Report = () => {
         </div>
       )} */}
 
-     {infoReportModel && (
+      {infoReportModel && (
         <div className="addusermodel">
           <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
@@ -1232,7 +1232,6 @@ const Report = () => {
                 <div className="modal-body">
                   <form className="row g-3">
                     <div className="col-md-4 did-floating-label-content">
-                     
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -1240,7 +1239,7 @@ const Report = () => {
                         value={infoData && infoData.camp_name}
                         readOnly
                       />
-                       <label className="form-group form-label did-floating-label">
+                      <label className="form-group form-label did-floating-label">
                         Type of Camp
                       </label>
                     </div>
@@ -1252,7 +1251,9 @@ const Report = () => {
                         value={infoData && infoData.pathlab_name}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Name of Pathlab</label>
+                      <label className="form-label did-floating-label">
+                        Name of Pathlab
+                      </label>
                     </div>
                     <div className="col-md-4 did-floating-label-content">
                       <input
@@ -1262,9 +1263,10 @@ const Report = () => {
                         value={infoData && infoData.rep_name}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Name of Rep</label>
+                      <label className="form-label did-floating-label">
+                        Representative Name
+                      </label>
                     </div>
-                   
 
                     <div className="col-md-4 did-floating-label-content">
                       <input
@@ -1274,7 +1276,9 @@ const Report = () => {
                         value={infoData && infoData.doctor_name}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Name of Doctor</label>
+                      <label className="form-label did-floating-label">
+                        Name of Doctor
+                      </label>
                     </div>
 
                     <div className="col-md-4 did-floating-label-content">
@@ -1285,7 +1289,9 @@ const Report = () => {
                         value={infoData && infoData.doctor_qualification}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Degree of Doctor</label>
+                      <label className="form-label did-floating-label">
+                        Degree of Doctor
+                      </label>
                     </div>
 
                     <div className="col-md-4 did-floating-label-content">
@@ -1296,7 +1302,9 @@ const Report = () => {
                         value={infoData && infoData.camp_date}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Date of Camp</label>
+                      <label className="form-label did-floating-label">
+                        Date of Camp
+                      </label>
                     </div>
                     <div className="col-md-4 did-floating-label-content">
                       <input
@@ -1306,7 +1314,9 @@ const Report = () => {
                         value={infoData && infoData.camp_time}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Time of Camp</label>
+                      <label className="form-label did-floating-label">
+                        Time of Camp
+                      </label>
                     </div>
                     <div className="col-md-4 did-floating-label-content">
                       <input
@@ -1316,7 +1326,9 @@ const Report = () => {
                         value={infoData && infoData.camp_venue}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Camp Venue</label>
+                      <label className="form-label did-floating-label">
+                        Camp Venue
+                      </label>
                     </div>
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
@@ -1326,10 +1338,11 @@ const Report = () => {
                         value={infoData && infoData.description}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Brand Name</label>
+                      <label className="form-label did-floating-label">
+                        Brand Name
+                      </label>
                     </div>
 
-                   
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="number"
@@ -1338,7 +1351,9 @@ const Report = () => {
                         value={infoData && infoData.screened_count}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Patients Screened</label>
+                      <label className="form-label did-floating-label">
+                        Patients Screened
+                      </label>
                     </div>
 
                     <div className="form-group col-md-4 did-floating-label-content">
@@ -1349,11 +1364,12 @@ const Report = () => {
                         value={infoData && infoData.diagnosed_count}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Patients Diagnosed</label>
+                      <label className="form-label did-floating-label">
+                        Patients Diagnosed
+                      </label>
                     </div>
 
                     <div className="form-group col-md-4 did-floating-label-content">
-                      
                       <input
                         type="number"
                         className="form-control did-floating-input"
@@ -1374,7 +1390,9 @@ const Report = () => {
                         value={infoData && infoData.feedback}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Feedback</label>
+                      <label className="form-label did-floating-label">
+                        Feedback
+                      </label>
                     </div>
                     <div>Camp Images</div>
 
@@ -1761,7 +1779,7 @@ const Report = () => {
           </div>
         </div>
       )} */}
-       
+
       {/** add request with dropdown select tag */}
       {/* {addRequestModel && (
         <div className="addusermodel">
@@ -2132,7 +2150,7 @@ const Report = () => {
         </div>
       )} */}
 
-{addRequestModel && (
+      {addRequestModel && (
         <div className="addusermodel">
           <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
@@ -2149,7 +2167,6 @@ const Report = () => {
                   {currentIndex === 1 ? (
                     <form className="row g-3">
                       <div className="form-group col-md-4 did-floating-label-content">
-                        
                         <select
                           className="form-control did-floating-select"
                           onChange={handelCampRequestChange}
@@ -2167,51 +2184,56 @@ const Report = () => {
                         </label>
                       </div>
                       <div className="form-group col-md-4 did-floating-label-content">
-                      <input
+                        <input
                           type="text"
                           className="form-control did-floating-input"
                           placeholder="Camp Type"
                           value={campTypeName}
                           disabled
                         />
-                          <label className="form-label did-floating-label">Type of Camp</label>
+                        <label className="form-label did-floating-label">
+                          Type of Camp
+                        </label>
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
-                       
-                      <input
+                        <input
                           type="text"
                           className="form-control did-floating-input"
                           placeholder="Pathlab Name"
                           value={pathlabName}
                           disabled
                         />
-                        
-                        <label className="form-label did-floating-label">Name of Pathlab</label>
+
+                        <label className="form-label did-floating-label">
+                          Name of Pathlab
+                        </label>
                       </div>
                       <div className="form-group col-md-4 did-floating-label-content">
-                      <input
+                        <input
                           type="text"
                           className="form-control did-floating-input"
                           placeholder="Representative Name"
                           value={repName}
                           disabled
                         />
-                        
-                        <label className="form-label did-floating-label">Name of Rep</label>
-                        
+
+                        <label className="form-label did-floating-label">
+                          Representative Name
+                        </label>
                       </div>
-                    
+
                       <div className="form-group col-md-4 did-floating-label-content">
-                      <input
+                        <input
                           type="text"
                           className="form-control did-floating-input"
                           placeholder="Doctor Name"
                           value={doctorName}
                           disabled
                         />
-                        <label className="form-label did-floating-label">Name of Doctor</label>
-                        
+                        <label className="form-label did-floating-label">
+                          Name of Doctor
+                        </label>
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
@@ -2222,7 +2244,9 @@ const Report = () => {
                           value={doctorQualification}
                           readOnly
                         />
-                        <label className="form-label did-floating-label">Degree of Doctor</label>
+                        <label className="form-label did-floating-label">
+                          Degree of Doctor
+                        </label>
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
@@ -2236,7 +2260,9 @@ const Report = () => {
                           value={campDate}
                           disabled
                         />
-                          <label className="form-label did-floating-label">Date of Camp</label>
+                        <label className="form-label did-floating-label">
+                          Date of Camp
+                        </label>
                       </div>
                       <div className="form-group col-md-4 did-floating-label-content">
                         <input
@@ -2249,7 +2275,9 @@ const Report = () => {
                           value={campTime}
                           disabled
                         />
-                          <label className="form-label did-floating-label">Time of Camp</label>
+                        <label className="form-label did-floating-label">
+                          Time of Camp
+                        </label>
                       </div>
                       <div className="form-group col-md-4 did-floating-label-content">
                         <input
@@ -2262,10 +2290,11 @@ const Report = () => {
                           value={campVenue}
                           disabled
                         />
-                          <label className="form-label did-floating-label">Camp Venue</label>
+                        <label className="form-label did-floating-label">
+                          Camp Venue
+                        </label>
                       </div>
                       <div className="form-group col-md-4 did-floating-label-content">
-                        
                         <input
                           type="number"
                           className="form-control did-floating-input"
@@ -2280,13 +2309,10 @@ const Report = () => {
                           No. of Patients Expected
                         </label>
                       </div>
-
-                     
                     </form>
                   ) : (
                     <form className="row g-3">
                       <div className="form-group col-md-4 did-floating-label-content">
-                       
                         <input
                           type="number"
                           className="form-control did-floating-input"
@@ -2296,13 +2322,12 @@ const Report = () => {
                           placeholder="Patients Screened No."
                           value={screenedCount}
                         />
-                         <label className="form-label did-floating-label">
+                        <label className="form-label did-floating-label">
                           No. of Patients Screened
                         </label>
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
-                        
                         <input
                           type="number"
                           className="form-control did-floating-input"
@@ -2318,7 +2343,6 @@ const Report = () => {
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
-                        
                         <input
                           type="number"
                           className="form-control did-floating-input"
@@ -2334,7 +2358,9 @@ const Report = () => {
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
-                        <label className="form-label did-floating-label">Brand Name</label>
+                        <label className="form-label did-floating-label">
+                          Brand Name
+                        </label>
                         <Select
                           isMulti
                           options={brandOptions}
@@ -2368,21 +2394,32 @@ const Report = () => {
                           placeholder="Feedback"
                           value={feedback}
                         />
-                        <label className="form-label did-floating-label">Feedback</label>
+                        <label className="form-label did-floating-label">
+                          Feedback
+                        </label>
                       </div>
 
                       <div className="form-group col-md-4 did-floating-label-content">
-                      <label htmlFor="fileInput" className="form-label custom-file-label"
-                    style={{
-                      pointerEvents: selectedFiles.length + campImages.length >= 3 ? 'none' : 'auto',
-                    }}> Upload Camp Images</label>
+                        <label
+                          htmlFor="fileInput"
+                          className="form-label custom-file-label"
+                          style={{
+                            pointerEvents:
+                              selectedFiles.length + campImages.length >= 3
+                                ? "none"
+                                : "auto",
+                          }}
+                        >
+                          {" "}
+                          Upload Camp Images
+                        </label>
                         <br />
                         <input
                           type="file"
                           accept="image/*"
                           multiple
                           id="fileInput"
-                         className="file-input"
+                          className="file-input"
                           onChange={handleFileChange}
                           disabled={selectedFiles.length >= 3}
                         />
@@ -2674,7 +2711,7 @@ const Report = () => {
         </div>
       )} */}
 
-     {editRequestModel && (
+      {editRequestModel && (
         <div className="addusermodel">
           <div
             className="modal fade show"
@@ -2694,7 +2731,6 @@ const Report = () => {
                 <div className="modal-body">
                   <form className="row g-3">
                     <div className="form-group col-md-4 did-floating-label-content">
-                      
                       <input
                         type="number"
                         className="form-control did-floating-input"
@@ -2710,7 +2746,6 @@ const Report = () => {
                     </div>
 
                     <div className="form-group col-md-4 did-floating-label-content">
-                     
                       <input
                         type="number"
                         className="form-control did-floating-input"
@@ -2720,13 +2755,12 @@ const Report = () => {
                         placeholder="Patients Diagnosed No."
                         value={diagnosedCount}
                       />
-                       <label className="form-label did-floating-label">
+                      <label className="form-label did-floating-label">
                         No. of Patients Diagnosed
                       </label>
                     </div>
 
                     <div className="form-group col-md-4 did-floating-label-content">
-                     
                       <input
                         type="number"
                         className="form-control did-floating-input"
@@ -2736,13 +2770,15 @@ const Report = () => {
                         placeholder="Prescription Generated No."
                         value={prescriptionCount}
                       />
-                       <label className="form-label did-floating-label">
+                      <label className="form-label did-floating-label">
                         No. of Prescription Generated
                       </label>
                     </div>
 
                     <div className="form-group col-md-4 did-floating-label-content">
-                      <label className="form-label did-floating-label">Brand Name</label>
+                      <label className="form-label did-floating-label">
+                        Brand Name
+                      </label>
                       <Select
                         isMulti
                         options={brandOptions}
@@ -2776,24 +2812,34 @@ const Report = () => {
                         placeholder="Feedback"
                         value={feedback}
                       />
-                        <label className="form-label did-floating-label">Feedback</label>
+                      <label className="form-label did-floating-label">
+                        Feedback
+                      </label>
                     </div>
                     <div className="form-group col-md-4 did-floating-label-content">
-                    <label htmlFor="fileInput" className="form-label custom-file-label"
-                    style={{
-                      pointerEvents: selectedFiles.length + campImages.length >= 3 ? 'none' : 'auto',
-                    }}> Upload Camp Images</label>
+                      <label
+                        htmlFor="fileInput"
+                        className="form-label custom-file-label"
+                        style={{
+                          pointerEvents:
+                            selectedFiles.length + campImages.length >= 3
+                              ? "none"
+                              : "auto",
+                        }}
+                      >
+                        {" "}
+                        Upload Camp Images
+                      </label>
                       <br />
                       <input
                         type="file"
                         accept="image/*"
                         multiple
                         id="fileInput"
-                         className="file-input"
+                        className="file-input"
                         onChange={handleEditFileChange}
                         disabled={selectedFiles.length + campImages.length >= 3}
                       />
-                     
                     </div>
                     <div
                       style={{

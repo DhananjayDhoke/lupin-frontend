@@ -29,7 +29,7 @@
   }
   
   .addusermodel .modal-header {
-    background-color: #00af4c;
+    background-image: linear-gradient(to bottom,#006600,#1b512d);
     color: white;
     border-bottom: none;
   }
