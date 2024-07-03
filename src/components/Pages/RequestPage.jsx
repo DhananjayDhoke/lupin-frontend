@@ -7,7 +7,7 @@ const RequestPage = () => {
   return (
     <>
       <Header/>
-      <Sidebar/>
+    
       <Request/>
     </>
   )

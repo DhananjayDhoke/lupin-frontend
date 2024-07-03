@@ -211,7 +211,8 @@ const Dashboard = () => {
     const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    XLSX.writeFile(wb, "AllReport.xlsx");
+    const rn = Math.floor(Math.random() * 1000) + 1
+    XLSX.writeFile(wb, `Lupin_AllReport_${rn}.xlsx`);
   };
 
   const handelSingalReportDownload = (id) => {
@@ -249,7 +250,8 @@ const Dashboard = () => {
     const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    XLSX.writeFile(wb, "Report.xlsx");
+    const rn = Math.floor(Math.random() * 1000) + 1
+    XLSX.writeFile(wb, `Lupin_Report_${rn}.xlsx`);
   };
 
   const handleFilter = (e) => {
@@ -338,7 +340,7 @@ const Dashboard = () => {
                   }}
                   value={listCampType}
                 >
-                  <option value="">Select Type of Camp</option>
+                  <option value="">All Camp</option>
                   {campList.map((e) => (
                     <option key={e.camp_id} value={e.camp_id}>
                       {e.camp_name}
@@ -423,7 +425,7 @@ const Dashboard = () => {
                         {/* <h5 className="card-title">Pagination with icon</h5> */}
 
                         <nav aria-label="Page navigation example">
-                          <ul className="pagination">
+                          <ul className="pagination pcur">
                             <li
                               className="page-item"
                               onClick={() => selectPageHandler(page - 1)}
@@ -443,7 +445,7 @@ const Dashboard = () => {
                                 >
                                   <span
                                     className={`page-link ${
-                                      page === i + 1 ? "show" : ""
+                                      page === i + 1 ? "showpag" : ""
                                     }`}
                                   >
                                     {i + 1}

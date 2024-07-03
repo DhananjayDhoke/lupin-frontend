@@ -7,7 +7,7 @@ const ReportPage = () => {
   return (
     <>
     <Header/>
-    <Sidebar/>
+
     <Report/>
     </>
   )

@@ -1,10 +1,13 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BASEURL } from "../constant/constant";
+import Sidebar from "./Sidebar";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const [toggleSideBar, setToggleSideBar] = useState(false)
 
   const sessionId = sessionStorage.getItem("sessionId");
   const handleLogout = async () => {
@@ -20,6 +23,11 @@ const Header = () => {
       console.log(error);
     }
   };
+
+  const handelSidebarChange =()=>{
+     setToggleSideBar(!toggleSideBar)
+  }
+  
   return (
     <div>
       {/* ======= Header ======= */}
@@ -32,7 +40,7 @@ const Header = () => {
             {/* <img src="assets/img/logo.png" alt=""> */}
             <span className="d-none d-lg-block">Lupin</span>
           </Link>
-          <i className="bi bi-list toggle-sidebar-btn"></i>
+          <i onClick={handelSidebarChange} className="bi bi-list toggle-sidebar-btn"></i>
         </div>
         {/* End Logo */}
 
@@ -74,6 +82,7 @@ const Header = () => {
         {/* End Icons Navigation */}
       </header>
       {/* End Header */}
+      <Sidebar toggleSideBar={toggleSideBar}></Sidebar>
     </div>
   );
 };

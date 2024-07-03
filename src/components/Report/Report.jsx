@@ -21,12 +21,11 @@ const Report = () => {
   const [brandId, setBrandId] = useState("");
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [feedback, setFeedback] = useState("");
-  //const [repName, setRepName] = useState('');
-  //const [repEmail, setRepEmail] = useState('');
-  //const [repMobile, setRepMobile] = useState('');
-  //const [repHq, setRepHq] = useState('');
-  //const [repZone, setRepZone] = useState('');
-  //const [repState, setRepState] = useState('');
+  
+  const [campTypeName, setCampTypeName] = useState('');
+  const [pathlabName,setPathlabName] = useState('');
+  const [repName, setRepName] = useState('');
+  const [doctorName, setDoctorName] = useState('');
 
   const [screenedCount, setScreenedCount] = useState(null);
   const [prescriptionCount, setPrescriptionCount] = useState(null);
@@ -455,6 +454,22 @@ const Report = () => {
         setCampReqId("");
         setCampRequstData("");
 
+        setCampReqId("");
+        setCampType("");
+        setRepId("");
+        setDoctorId("");
+        setPathlab("");
+        setCampVenue("");
+        setCampDate("");
+        setCampTime("");
+        setCampPatients("");
+        setDoctorQualification("");
+  
+        setCampTypeName('');
+        setRepName('');
+        setPathlabName('');
+        setDoctorName('');
+
         const formData = new FormData();
         selectedFiles.forEach((file) => {
           formData.append("images", file);
@@ -806,7 +821,7 @@ const Report = () => {
     if (!event.target.value) {
       //console.log("insid empty here")
       setCampRequstData("");
-      setCampReqId("");
+     
       setCampReqId("");
       setCampType("");
       setRepId("");
@@ -817,6 +832,11 @@ const Report = () => {
       setCampTime("");
       setCampPatients("");
       setDoctorQualification("");
+
+      setCampTypeName('');
+      setRepName('');
+      setPathlabName('');
+      setDoctorName('');
     }
 
     const requestData = campRequestList.find(
@@ -835,6 +855,11 @@ const Report = () => {
       setCampTime(requestData.camp_time);
       setCampPatients(requestData.no_of_patients);
       setDoctorQualification(requestData.doctor_qualification);
+
+      setCampTypeName(requestData.camp_name);
+      setRepName(requestData.rep_name);
+      setPathlabName(requestData.pathlab_name);
+      setDoctorName(requestData.doctor_name);
     }
   };
   const [page, setPage] = useState(1);
@@ -881,7 +906,7 @@ const Report = () => {
                   }}
                   value={listCampType}
                 >
-                  <option value="">Select Type of Camp</option>
+                  <option value="">All Camp</option>
                   {campList.map((e) => (
                     <option key={e.camp_id} value={e.camp_id}>
                       {e.camp_name}
@@ -983,7 +1008,7 @@ const Report = () => {
                                 >
                                   <span
                                     className={`page-link ${
-                                      page === i + 1 ? "show" : ""
+                                      page === i + 1 ? "showpag" : ""
                                     }`}
                                   >
                                     {i + 1}
@@ -1012,7 +1037,7 @@ const Report = () => {
         </section>
       </main>
 
-      {infoReportModel && (
+      {/* {infoReportModel && (
         <div className="addusermodel">
           <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
@@ -1059,58 +1084,7 @@ const Report = () => {
                         readOnly
                       />
                     </div>
-                    {/* <div className="col-md-4">
-                      <label className="form-label">Contact No Of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Contact No"
-                        value={infoData && infoData.rep_contact}
-                        readOnly
-                      />
-                    </div> */}
-                    {/* <div className="col-md-4">
-                      <label className="form-label">Email Id of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Email"
-                        value={infoData && infoData.rep_email}
-                        readOnly
-                      />
-                    </div> */}
-
-                    {/* <div className="col-md-4">
-                      <label className="form-label">Zone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Zone"
-                        value={infoData && infoData.zone}
-                        readOnly
-                      />
-                    </div> */}
-                    {/* <div className="col-md-4">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="State"
-                        value={infoData && infoData.state}
-                        readOnly
-                      />
-                    </div> */}
-                    {/* <div className="col-md-4">
-                      <label className="form-label">Hq</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Hq"
-                        value={infoData && infoData.hq}
-                        readOnly
-                      />
-                    </div> */}
-
+                    
                     <div className="col-md-4">
                       <label className="form-label">Name of Doctor</label>
                       <input
@@ -1174,16 +1148,7 @@ const Report = () => {
                       />
                     </div>
 
-                    {/* <div className="col-md-4">
-                      <label className="form-label">Contact No of ABM</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Contact No"
-                        value={infoData && infoData.abm_contact}
-                        readOnly
-                      />
-                    </div> */}
+                  
                     <div className="form-group col-md-4">
                       <label className="form-label">Patients Screened</label>
                       <input
@@ -1249,9 +1214,191 @@ const Report = () => {
             </div>
           </div>
         </div>
+      )} */}
+
+     {infoReportModel && (
+        <div className="addusermodel">
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Report Info</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={handelCloseInfoModel}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <form className="row g-3">
+                    <div className="col-md-4 did-floating-label-content">
+                     
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Camp Type"
+                        value={infoData && infoData.camp_name}
+                        readOnly
+                      />
+                       <label className="form-group form-label did-floating-label">
+                        Type of Camp
+                      </label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Pathlab Name"
+                        value={infoData && infoData.pathlab_name}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Name of Pathlab</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Representative Name"
+                        value={infoData && infoData.rep_name}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Name of Rep</label>
+                    </div>
+                   
+
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Doctor Name"
+                        value={infoData && infoData.doctor_name}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Name of Doctor</label>
+                    </div>
+
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Doctor Degree"
+                        value={infoData && infoData.doctor_qualification}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Degree of Doctor</label>
+                    </div>
+
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Camp Date"
+                        value={infoData && infoData.camp_date}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Date of Camp</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="time"
+                        className="form-control did-floating-input"
+                        placeholder="Camp Time"
+                        value={infoData && infoData.camp_time}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Time of Camp</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Camp Venue"
+                        value={infoData && infoData.camp_venue}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Camp Venue</label>
+                    </div>
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Brand Name"
+                        value={infoData && infoData.description}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Brand Name</label>
+                    </div>
+
+                   
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        placeholder="Screened No."
+                        value={infoData && infoData.screened_count}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Patients Screened</label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        placeholder="Diagnosed No."
+                        value={infoData && infoData.diagnosed_count}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Patients Diagnosed</label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        placeholder="Prescription No."
+                        value={infoData && infoData.prescription_count}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">
+                        Prescription Generated
+                      </label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Contact No"
+                        value={infoData && infoData.feedback}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Feedback</label>
+                    </div>
+                    <div>Camp Images</div>
+
+                    <div className="form-row flex">
+                      {campImages &&
+                        campImages.length > 0 &&
+                        campImages.map((img) => (
+                          <img
+                            key={img.crimgid}
+                            className="campimage"
+                            crossOrigin="anonymous"
+                            src={`${BASEURL}/uploads/report/${img.imgpath}`}
+                          ></img>
+                        ))}
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
-      {addRequestModel && (
+      {/* {addRequestModel && (
         <div className="addusermodel">
           <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-xl">
@@ -1345,66 +1492,7 @@ const Report = () => {
                           ))}
                         </select>
                       </div>
-                      {/* <div className="form-group col-md-4">
-                      <label className="form-label">Contact No Of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        
-                        placeholder="contact"
-                        value={repMobile}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Email Id of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        
-                        placeholder="email"
-                        value={repEmail}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Zone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                       
-                        placeholder="zone"
-                        onChange={(e)=>{
-                          setRepZone(e.target.value)
-                         }}
-                        value={repZone}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        
-                        placeholder="state"
-                        onChange={(e)=>{
-                          setRepState(e.target.value)
-                         }}
-                        value={repState}
-                      />
-                    </div> */}
-                      {/* <div className="form-group col-md-4">
-                      <label className="form-label">Hq</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e)=>{
-                          setRepHq(e.target.value)
-                         }}
-                        placeholder="Hq"
-                        value={repHq}
-                      />
-                    </div> */}
+                    
                       <div className="form-group col-md-4">
                         <label className="form-label">Name of Doctor</label>
                         <select
@@ -1490,18 +1578,7 @@ const Report = () => {
                         />
                       </div>
 
-                      {/* <div className="form-group col-md-4">
-                      <label className="form-label">Contact No of ABM</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Contact No."
-                        onChange={(e)=>{
-                          setAbmContact(e.target.value)
-                        }}
-                        value={abmContact}
-                      />
-                    </div> */}
+                     
                     </form>
                   ) : (
                     <form className="row g-3">
@@ -1683,9 +1760,717 @@ const Report = () => {
             </div>
           </div>
         </div>
+      )} */}
+       
+      {/** add request with dropdown select tag */}
+      {/* {addRequestModel && (
+        <div className="addusermodel">
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Add Report</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={handelCloseModel}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  {currentIndex === 1 ? (
+                    <form className="row g-3">
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={handelCampRequestChange}
+                          value={campReqId}
+                        >
+                          <option value="">Select...</option>
+                          {campRequestList.map((e) => (
+                            <option key={e.camp_req_id} value={e.camp_req_id}>
+                              {e.camp_date1}-{e.camp_venue}
+                            </option>
+                          ))}
+                        </select>
+                        <label className="form-label did-floating-label">
+                          Select Camp Request
+                        </label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={(event) => {
+                            //setCampName(event.target.options[event.target.selectedIndex].getAttribute('data-campname'));
+                            setCampType(event.target.value);
+                          }}
+                          value={campType}
+                          readOnly
+                        >
+                          <option value="">Select...</option>
+                          {campList.map((e) => (
+                            <option
+                            data-campname={e.camp_name}
+                            key={e.camp_id}
+                            value={e.camp_id}
+                            >
+                              {e.camp_name}
+                            </option>
+                          ))}
+                        </select>
+                          <label className="form-label did-floating-label">Type of Camp</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label did-floating-label">Name of Pathlab</label>
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={(e) => {
+                            setPathlab(e.target.value);
+                          }}
+                          //onChange={handelPathlabChange}
+                          disabled
+                          value={pathlab}
+                        >
+                          <option value="">Select...</option>
+                          {pathlabList.map((e) => (
+                            <option key={e.pathlab_id} value={e.pathlab_id}>
+                              {e.pathlab_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label did-floating-label">Name of Rep</label>
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={(e) => {
+                            setRepId(e.target.value);
+                          }}
+                          disabled
+                          value={repId}
+                        >
+                          <option value="">Select...</option>
+                          {representativeList.map((e) => (
+                            <option key={e.rep_id} value={e.rep_id}>
+                              {e.rep_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label did-floating-label">Name of Doctor</label>
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={(e) => {
+                            setDoctorId(e.target.value);
+                          }}
+                          disabled
+                          value={doctorId}
+                        >
+                          <option value="">Select...</option>
+                          {doctorList.map((e) => (
+                            <option key={e.cdoc_id} value={e.cdoc_id}>
+                              {e.doctor_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Doctor Degree"
+                          value={doctorQualification}
+                          readOnly
+                        />
+                        <label className="form-label did-floating-label">Degree of Doctor</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="date"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampDate(e.target.value);
+                          }}
+                          placeholder="Camp Date"
+                          value={campDate}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Date of Camp</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="time"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampTime(e.target.value);
+                          }}
+                          placeholder="Camp Time"
+                          value={campTime}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Time of Camp</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampVenue(e.target.value);
+                          }}
+                          placeholder="Camp Venue"
+                          value={campVenue}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Camp Venue</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampPatients(e.target.value);
+                          }}
+                          placeholder="Patients No."
+                          value={campPatients}
+                          disabled
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Patients Expected
+                        </label>
+                      </div>
+
+                     
+                    </form>
+                  ) : (
+                    <form className="row g-3">
+                      <div className="form-group col-md-4 did-floating-label-content">
+                       
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setScreenedCount(e.target.value);
+                          }}
+                          placeholder="Patients Screened No."
+                          value={screenedCount}
+                        />
+                         <label className="form-label did-floating-label">
+                          No. of Patients Screened
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setDiagnosedCount(e.target.value);
+                          }}
+                          placeholder="Patients Diagnosed No."
+                          value={diagnosedCount}
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Patients Diagnosed
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setPrescriptionCount(e.target.value);
+                          }}
+                          placeholder="Prescription Generated No."
+                          value={prescriptionCount}
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Prescription Generated
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label did-floating-label">Brand Name</label>
+                        <Select
+                          isMulti
+                          options={brandOptions}
+                          value={selectedBrands}
+                          onChange={handleBrandChange}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          placeholder="Select Brands..."
+                          styles={{
+                            menu: (provided) => ({
+                              ...provided,
+                              maxHeight: 140, // Adjust this value to your desired height
+                              overflowY: "auto", // Enable vertical scrolling
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              maxHeight: 140, // Ensure the inner menu list is also constrained
+                            }),
+                          }}
+                          menuPosition="fixed" // Fix the menu position
+                        />
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setFeedback(e.target.value);
+                          }}
+                          placeholder="Feedback"
+                          value={feedback}
+                        />
+                        <label className="form-label did-floating-label">Feedback</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label">
+                          {" "}
+                          Upload Camp Images
+                        </label>{" "}
+                        <br />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleFileChange}
+                          disabled={selectedFiles.length >= 3}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          marginTop: "10px",
+                        }}
+                      >
+                        {previewUrls.map((url, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              position: "relative",
+                              display: "inline-block",
+                            }}
+                          >
+                            <img
+                              src={url}
+                              alt="Preview"
+                              style={{ width: "100px", height: "130px" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index)}
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
+                                background: "#07070742",
+                                color: "white",
+                                border: "none",
+                                padding: "0px 4px",
+                                cursor: "pointer",
+                              }}
+                            >
+                              X
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </form>
+                  )}
+
+                  {currentIndex === 1 ? (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto mt-2"
+                        onClick={handleGoNext}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {currentIndex === 2 ? (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto mt-1"
+                        onClick={handlePrevious}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto ml-1 mt-1"
+                        //onClick={handleImageUpload}
+                        onClick={handleAddSubmit}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
+
+{addRequestModel && (
+        <div className="addusermodel">
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Add Report</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={handelCloseModel}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  {currentIndex === 1 ? (
+                    <form className="row g-3">
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <select
+                          className="form-control did-floating-select"
+                          onChange={handelCampRequestChange}
+                          value={campReqId}
+                        >
+                          <option value="">Select...</option>
+                          {campRequestList.map((e) => (
+                            <option key={e.camp_req_id} value={e.camp_req_id}>
+                              {e.camp_date1}-{e.camp_venue}
+                            </option>
+                          ))}
+                        </select>
+                        <label className="form-label did-floating-label">
+                          Select Camp Request
+                        </label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Camp Type"
+                          value={campTypeName}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Type of Camp</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                       
+                      <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Pathlab Name"
+                          value={pathlabName}
+                          disabled
+                        />
+                        
+                        <label className="form-label did-floating-label">Name of Pathlab</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Representative Name"
+                          value={repName}
+                          disabled
+                        />
+                        
+                        <label className="form-label did-floating-label">Name of Rep</label>
+                        
+                      </div>
+                    
+                      <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Doctor Name"
+                          value={doctorName}
+                          disabled
+                        />
+                        <label className="form-label did-floating-label">Name of Doctor</label>
+                        
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          placeholder="Doctor Degree"
+                          value={doctorQualification}
+                          readOnly
+                        />
+                        <label className="form-label did-floating-label">Degree of Doctor</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="date"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampDate(e.target.value);
+                          }}
+                          placeholder="Camp Date"
+                          value={campDate}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Date of Camp</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="time"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampTime(e.target.value);
+                          }}
+                          placeholder="Camp Time"
+                          value={campTime}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Time of Camp</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampVenue(e.target.value);
+                          }}
+                          placeholder="Camp Venue"
+                          value={campVenue}
+                          disabled
+                        />
+                          <label className="form-label did-floating-label">Camp Venue</label>
+                      </div>
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setCampPatients(e.target.value);
+                          }}
+                          placeholder="Patients No."
+                          value={campPatients}
+                          disabled
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Patients Expected
+                        </label>
+                      </div>
+
+                     
+                    </form>
+                  ) : (
+                    <form className="row g-3">
+                      <div className="form-group col-md-4 did-floating-label-content">
+                       
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setScreenedCount(e.target.value);
+                          }}
+                          placeholder="Patients Screened No."
+                          value={screenedCount}
+                        />
+                         <label className="form-label did-floating-label">
+                          No. of Patients Screened
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setDiagnosedCount(e.target.value);
+                          }}
+                          placeholder="Patients Diagnosed No."
+                          value={diagnosedCount}
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Patients Diagnosed
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        
+                        <input
+                          type="number"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setPrescriptionCount(e.target.value);
+                          }}
+                          placeholder="Prescription Generated No."
+                          value={prescriptionCount}
+                        />
+                        <label className="form-label did-floating-label">
+                          No. of Prescription Generated
+                        </label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <label className="form-label did-floating-label">Brand Name</label>
+                        <Select
+                          isMulti
+                          options={brandOptions}
+                          value={selectedBrands}
+                          onChange={handleBrandChange}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          placeholder="Select Brands..."
+                          styles={{
+                            menu: (provided) => ({
+                              ...provided,
+                              maxHeight: 140, // Adjust this value to your desired height
+                              overflowY: "auto", // Enable vertical scrolling
+                            }),
+                            menuList: (provided) => ({
+                              ...provided,
+                              maxHeight: 140, // Ensure the inner menu list is also constrained
+                            }),
+                          }}
+                          menuPosition="fixed" // Fix the menu position
+                        />
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                        <input
+                          type="text"
+                          className="form-control did-floating-input"
+                          onChange={(e) => {
+                            setFeedback(e.target.value);
+                          }}
+                          placeholder="Feedback"
+                          value={feedback}
+                        />
+                        <label className="form-label did-floating-label">Feedback</label>
+                      </div>
+
+                      <div className="form-group col-md-4 did-floating-label-content">
+                      <label htmlFor="fileInput" className="form-label custom-file-label"
+                    style={{
+                      pointerEvents: selectedFiles.length + campImages.length >= 3 ? 'none' : 'auto',
+                    }}> Upload Camp Images</label>
+                        <br />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          id="fileInput"
+                         className="file-input"
+                          onChange={handleFileChange}
+                          disabled={selectedFiles.length >= 3}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          marginTop: "10px",
+                        }}
+                      >
+                        {previewUrls.map((url, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              position: "relative",
+                              display: "inline-block",
+                            }}
+                          >
+                            <img
+                              src={url}
+                              alt="Preview"
+                              style={{ width: "100px", height: "130px" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index)}
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
+                                background: "#07070742",
+                                color: "white",
+                                border: "none",
+                                padding: "0px 4px",
+                                cursor: "pointer",
+                              }}
+                            >
+                              X
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </form>
+                  )}
+
+                  {currentIndex === 1 ? (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto mt-2"
+                        onClick={handleGoNext}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {currentIndex === 2 ? (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto mt-1"
+                        onClick={handlePrevious}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-success mx-auto ml-1 mt-1"
+                        //onClick={handleImageUpload}
+                        onClick={handleAddSubmit}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
-      {editRequestModel && (
+      {/* {editRequestModel && (
         <div className="addusermodel">
           <div
             className="modal fade show"
@@ -1796,6 +2581,219 @@ const Report = () => {
                         onChange={handleEditFileChange}
                         disabled={selectedFiles.length + campImages.length >= 3}
                       />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {campImages &&
+                        campImages.length > 0 &&
+                        campImages.map((img) => (
+                          <div
+                            key={img.crimgid}
+                            style={{
+                              position: "relative",
+                              display: "inline-block",
+                            }}
+                          >
+                            <img
+                              crossOrigin="anonymous"
+                              src={`${BASEURL}/uploads/report/${img.imgpath}`}
+                              alt="Report Image"
+                              style={{ width: "100px", height: "130px" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handelDeleteCampImage(img.crimgid)}
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
+                                background: "#07070742",
+                                color: "white",
+                                border: "none",
+                                padding: "0px 4px",
+                                cursor: "pointer",
+                              }}
+                            >
+                              X
+                            </button>
+                          </div>
+                        ))}
+
+                      {previewUrls.map((url, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            position: "relative",
+                            display: "inline-block",
+                          }}
+                        >
+                          <img
+                            src={url}
+                            alt="Preview"
+                            style={{ width: "100px", height: "130px" }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            style={{
+                              position: "absolute",
+                              top: "0",
+                              right: "0",
+                              background: "#07070742",
+                              color: "white",
+                              border: "none",
+                              padding: "0px 4px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            X
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </form>
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      className="btn btn-success mx-auto mt-1"
+                      //onClick={handleImageUpload}
+                      onClick={handleEditSubmit}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
+
+     {editRequestModel && (
+        <div className="addusermodel">
+          <div
+            className="modal fade show"
+            style={{ display: "block" }}
+            //id="ExtralargeModal"
+          >
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Edit Request</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={handelCloseEditModel}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <form className="row g-3">
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        onChange={(e) => {
+                          setScreenedCount(e.target.value);
+                        }}
+                        placeholder="Patients Screened No."
+                        value={screenedCount}
+                      />
+                      <label className="form-label did-floating-label">
+                        No. of Patients Screened
+                      </label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                     
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        onChange={(e) => {
+                          setDiagnosedCount(e.target.value);
+                        }}
+                        placeholder="Patients Diagnosed No."
+                        value={diagnosedCount}
+                      />
+                       <label className="form-label did-floating-label">
+                        No. of Patients Diagnosed
+                      </label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                     
+                      <input
+                        type="number"
+                        className="form-control did-floating-input"
+                        onChange={(e) => {
+                          setPrescriptionCount(e.target.value);
+                        }}
+                        placeholder="Prescription Generated No."
+                        value={prescriptionCount}
+                      />
+                       <label className="form-label did-floating-label">
+                        No. of Prescription Generated
+                      </label>
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <label className="form-label did-floating-label">Brand Name</label>
+                      <Select
+                        isMulti
+                        options={brandOptions}
+                        value={selectedBrands}
+                        onChange={handleBrandChange}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        placeholder="Select Brands..."
+                        styles={{
+                          menu: (provided) => ({
+                            ...provided,
+                            maxHeight: 140, // Adjust this value to your desired height
+                            overflowY: "auto", // Enable vertical scrolling
+                          }),
+                          menuList: (provided) => ({
+                            ...provided,
+                            maxHeight: 140, // Ensure the inner menu list is also constrained
+                          }),
+                        }}
+                        menuPosition="fixed" // Fix the menu position
+                      />
+                    </div>
+
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        onChange={(e) => {
+                          setFeedback(e.target.value);
+                        }}
+                        placeholder="Feedback"
+                        value={feedback}
+                      />
+                        <label className="form-label did-floating-label">Feedback</label>
+                    </div>
+                    <div className="form-group col-md-4 did-floating-label-content">
+                    <label htmlFor="fileInput" className="form-label custom-file-label"
+                    style={{
+                      pointerEvents: selectedFiles.length + campImages.length >= 3 ? 'none' : 'auto',
+                    }}> Upload Camp Images</label>
+                      <br />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        id="fileInput"
+                         className="file-input"
+                        onChange={handleEditFileChange}
+                        disabled={selectedFiles.length + campImages.length >= 3}
+                      />
+                     
                     </div>
                     <div
                       style={{
