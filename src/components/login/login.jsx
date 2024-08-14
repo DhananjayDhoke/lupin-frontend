@@ -22,12 +22,16 @@ const Login = () => {
         const empId = res?.data?.responseData?.empID;
         const userId = res?.data?.responseData?.user_id;
         const sessionId = res?.data?.responseData?.sessionID;
+        const email = res?.data?.responseData?.email;
+        const role = res?.data?.responseData?.role;
 
         console.log(empId);
         sessionStorage.setItem("IsUserLoggedIn", "true");
         sessionStorage.setItem("empId", empId);
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("sessionId", sessionId);
+        sessionStorage.setItem("email",email);
+        sessionStorage.setItem("role",role);
         navigate("/dashboard");
       } else {
         //console.log("details",res.response.data.details)

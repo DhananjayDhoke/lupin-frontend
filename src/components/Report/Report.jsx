@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BASEURL } from "../constant/constant";
+import { BASEURL, PageCount } from "../constant/constant";
 import ConfirmationPopup from "../popup/Popup";
 //import { toast } from "react-toastify";
 import Select from "react-select";
 import toast from "react-hot-toast";
+import Loader from "../utils/Loader";
 //import { ThreeDots } from "react-loader-spinner";
 const Report = () => {
   const userId = sessionStorage.getItem("userId");
@@ -75,6 +76,7 @@ const Report = () => {
   const [campRequestList, setCampRequestList] = useState([]);
   const [campRequestData, setCampRequstData] = useState(null);
   const [campReqId, setCampReqId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handelAddReport = () => {
     setAddRequestModel(true);
@@ -186,6 +188,7 @@ const Report = () => {
 
   //  for showing dashboard list
   const getCampReportList = async () => {
+    setLoading(true)
     try {
       const res = await axios.post(
         `${BASEURL}/report/getAllCampReport?searchName=${searchQuery}`,
@@ -198,10 +201,24 @@ const Report = () => {
     } catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    getCampReportList();
+    if(searchQuery){
+      let timer =setTimeout(()=>{
+        getCampReportList();
+      },2000)
+      
+      return ()=>{
+        clearTimeout(timer)
+      }
+    }
+    else{
+      getCampReportList();
+    }
   }, [listCampType, searchQuery]);
 
   // for get camp type
@@ -272,8 +289,8 @@ const Report = () => {
 
   useEffect(() => {
     getCampList();
-    getRepresentativeList();
-    getDoctor();
+    //getRepresentativeList();
+    //getDoctor();
     getPathlabList();
     getBrandList();
     getCampRequestList();
@@ -867,13 +884,57 @@ const Report = () => {
   const selectPageHandler = (selectedPage) => {
     if (
       selectedPage >= 1 &&
-      selectedPage <= Math.ceil(campReportList.length / 5) &&
+      selectedPage <= Math.ceil(campReportList.length / PageCount) &&
       page !== selectedPage
     )
       setPage(selectedPage);
   };
 
-  return (
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(campReportList.length / PageCount);
+    const pageNumbers = [];
+    const maxPageNumbersToShow = PageCount;
+
+    if (totalPages <= maxPageNumbersToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(2, page - 2);
+      const endPage = Math.min(totalPages - 1, page + 2);
+
+      pageNumbers.push(1);
+      if (startPage > 2) {
+        pageNumbers.push("...");
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      if (endPage < totalPages - 1) {
+        pageNumbers.push("...");
+      }
+      pageNumbers.push(totalPages);
+    }
+
+    return pageNumbers.map((pageNum, index) =>
+      pageNum === "..." ? (
+        <li className="page-item" key={index}>
+          <span className="page-link">{pageNum}</span>
+        </li>
+      ) : (
+        <li
+          className={`page-item ${page === pageNum ? "active" : ""}`}
+          onClick={() => selectPageHandler(pageNum)}
+          key={pageNum}
+        >
+          <span className="page-link">{pageNum}</span>
+        </li>
+      )
+    );
+  };
+
+  return loading ? <Loader/> : (
     <>
       <main id="main" className="main">
         {/* <div className="pagetitle">
@@ -891,6 +952,7 @@ const Report = () => {
                     placeholder="Search."
                     aria-label="Search."
                     aria-describedby="basic-addon2"
+                    value={searchQuery}
                     onChange={handleSearchChange}
                   />
                   <span className="input-group-text" id="basic-addon2">
@@ -933,6 +995,7 @@ const Report = () => {
                     <table className="table table-hover newcss">
                       <thead>
                         <tr>
+                           <th scope="col">Report Id</th>
                           <th scope="col">Doctor Name</th>
                           <th scope="col">Rep Name</th>
                           <th scope="col">Pathlab Name</th>
@@ -945,9 +1008,10 @@ const Report = () => {
                         {campReportList &&
                           campReportList.length > 0 &&
                           campReportList
-                            .slice(page * 5 - 5, page * 5)
+                            .slice(page * PageCount - PageCount, page * PageCount)
                             .map((e) => (
                               <tr key={e.crid}>
+                                <td>{e.crid}</td>
                                 <td>{e.doctor_name}</td>
                                 <td>{e.rep_name}</td>
                                 <td>{e.pathlab_name}</td>
@@ -988,7 +1052,7 @@ const Report = () => {
                         {/* <h5 className="card-title">Pagination with icon</h5> */}
 
                         <nav aria-label="Page navigation example">
-                          <ul className="pagination">
+                          <ul className="pagination pcur">
                             <li
                               className="page-item"
                               onClick={() => selectPageHandler(page - 1)}
@@ -997,7 +1061,8 @@ const Report = () => {
                                 <span aria-hidden="true">&laquo;</span>
                               </span>
                             </li>
-                            {[
+                            {renderPageNumbers()}
+                            {/* {[
                               ...Array(Math.ceil(campReportList.length / 5)),
                             ].map((_, i) => {
                               return (
@@ -1015,7 +1080,7 @@ const Report = () => {
                                   </span>
                                 </li>
                               );
-                            })}
+                            })} */}
                             {/* <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className="page-link" >{i+1}</span></li> */}
                             <li
                               className="page-item"
@@ -1037,184 +1102,7 @@ const Report = () => {
         </section>
       </main>
 
-      {/* {infoReportModel && (
-        <div className="addusermodel">
-          <div className="modal fade show" style={{ display: "block" }}>
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Report Info</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handelCloseInfoModel}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form className="row g-3">
-                    <div className="col-md-4">
-                      <label className="form-group form-label">
-                        Type of Camp
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Type"
-                        value={infoData && infoData.camp_name}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Pathlab</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Pathlab Name"
-                        value={infoData && infoData.pathlab_name}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Representative Name"
-                        value={infoData && infoData.rep_name}
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Name"
-                        value={infoData && infoData.doctor_name}
-                        readOnly
-                      />
-                    </div>
 
-                    <div className="col-md-4">
-                      <label className="form-label">Degree of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Degree"
-                        value={infoData && infoData.doctor_qualification}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Date of Camp</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Date"
-                        value={infoData && infoData.camp_date}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Time of Camp</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        placeholder="Camp Time"
-                        value={infoData && infoData.camp_time}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Camp Venue</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Venue"
-                        value={infoData && infoData.camp_venue}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Brand Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Brand Name"
-                        value={infoData && infoData.description}
-                        readOnly
-                      />
-                    </div>
-
-                  
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Patients Screened</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Screened No."
-                        value={infoData && infoData.screened_count}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Patients Diagnosed</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Diagnosed No."
-                        value={infoData && infoData.diagnosed_count}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        Prescription Generated
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Prescription No."
-                        value={infoData && infoData.prescription_count}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Feedback</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Contact No"
-                        value={infoData && infoData.feedback}
-                        readOnly
-                      />
-                    </div>
-                    <div>Camp Images</div>
-
-                    <div className="form-row flex">
-                      {campImages &&
-                        campImages.length > 0 &&
-                        campImages.map((img) => (
-                          <img
-                            key={img.crimgid}
-                            className="campimage"
-                            crossOrigin="anonymous"
-                            src={`${BASEURL}/uploads/report/${img.imgpath}`}
-                          ></img>
-                        ))}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {infoReportModel && (
         <div className="addusermodel">
@@ -2175,7 +2063,7 @@ const Report = () => {
                           <option value="">Select...</option>
                           {campRequestList.map((e) => (
                             <option key={e.camp_req_id} value={e.camp_req_id}>
-                              {e.camp_date1}-{e.camp_venue}
+                              {e.camp_date1} - {e.camp_venue} - {e.camp_req_id}
                             </option>
                           ))}
                         </select>
@@ -2411,8 +2299,9 @@ const Report = () => {
                           }}
                         >
                           {" "}
-                          Upload Camp Images
+                          {selectedFiles.length >0 && selectedFiles.length <3 ? "Add More Images":"Upload Camp Images"}
                         </label>
+                        <p style={{color:"red", fontSize:"13px"}}>Maximum 3 images upload</p>
                         <br />
                         <input
                           type="file"
@@ -2507,209 +2396,6 @@ const Report = () => {
         </div>
       )}
 
-      {/* {editRequestModel && (
-        <div className="addusermodel">
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-            //id="ExtralargeModal"
-          >
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Edit Request</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handelCloseEditModel}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form className="row g-3">
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        No. of Patients Screened
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => {
-                          setScreenedCount(e.target.value);
-                        }}
-                        placeholder="Patients Screened No."
-                        value={screenedCount}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        No. of Patients Diagnosed
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => {
-                          setDiagnosedCount(e.target.value);
-                        }}
-                        placeholder="Patients Diagnosed No."
-                        value={diagnosedCount}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        No. of Prescription Generated
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => {
-                          setPrescriptionCount(e.target.value);
-                        }}
-                        placeholder="Prescription Generated No."
-                        value={prescriptionCount}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Brand Name</label>
-                      <Select
-                        isMulti
-                        options={brandOptions}
-                        value={selectedBrands}
-                        onChange={handleBrandChange}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        placeholder="Select Brands..."
-                        styles={{
-                          menu: (provided) => ({
-                            ...provided,
-                            maxHeight: 140, // Adjust this value to your desired height
-                            overflowY: "auto", // Enable vertical scrolling
-                          }),
-                          menuList: (provided) => ({
-                            ...provided,
-                            maxHeight: 140, // Ensure the inner menu list is also constrained
-                          }),
-                        }}
-                        menuPosition="fixed" // Fix the menu position
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Feedback</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setFeedback(e.target.value);
-                        }}
-                        placeholder="Feedback"
-                        value={feedback}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label"> Upload Camp Images</label>
-                      <br />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleEditFileChange}
-                        disabled={selectedFiles.length + campImages.length >= 3}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        marginTop: "10px",
-                      }}
-                    >
-                      {campImages &&
-                        campImages.length > 0 &&
-                        campImages.map((img) => (
-                          <div
-                            key={img.crimgid}
-                            style={{
-                              position: "relative",
-                              display: "inline-block",
-                            }}
-                          >
-                            <img
-                              crossOrigin="anonymous"
-                              src={`${BASEURL}/uploads/report/${img.imgpath}`}
-                              alt="Report Image"
-                              style={{ width: "100px", height: "130px" }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => handelDeleteCampImage(img.crimgid)}
-                              style={{
-                                position: "absolute",
-                                top: "0",
-                                right: "0",
-                                background: "#07070742",
-                                color: "white",
-                                border: "none",
-                                padding: "0px 4px",
-                                cursor: "pointer",
-                              }}
-                            >
-                              X
-                            </button>
-                          </div>
-                        ))}
-
-                      {previewUrls.map((url, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            position: "relative",
-                            display: "inline-block",
-                          }}
-                        >
-                          <img
-                            src={url}
-                            alt="Preview"
-                            style={{ width: "100px", height: "130px" }}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(index)}
-                            style={{
-                              position: "absolute",
-                              top: "0",
-                              right: "0",
-                              background: "#07070742",
-                              color: "white",
-                              border: "none",
-                              padding: "0px 4px",
-                              cursor: "pointer",
-                            }}
-                          >
-                            X
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </form>
-                  <div className="text-center">
-                    <button
-                      type="button"
-                      className="btn btn-success mx-auto mt-1"
-                      //onClick={handleImageUpload}
-                      onClick={handleEditSubmit}
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {editRequestModel && (
         <div className="addusermodel">

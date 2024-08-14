@@ -14,6 +14,8 @@ const Header = () => {
     sessionStorage.removeItem("IsUserLoggedIn");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("empId");
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('role');
     navigate("/");
     try {
       console.log("first");

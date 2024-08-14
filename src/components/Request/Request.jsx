@@ -5,10 +5,14 @@ import { ThreeDots } from "react-loader-spinner";
 import * as XLSX from "xlsx/xlsx.mjs";
 import axios from "axios";
 import "../Dashboard/Dashboard.css";
-import { BASEURL } from "../constant/constant";
+import { BASEURL, PageCount } from "../constant/constant";
 import toast from "react-hot-toast";
+import Loader from "../utils/Loader";
 const Request = () => {
   const userId = sessionStorage.getItem("userId");
+  const empId = sessionStorage.getItem('empId');
+  const role = sessionStorage.getItem('role');
+  const userMail = sessionStorage.getItem('mail');
   // data for select tag
   const [isLoading, setIsLoading] = useState(false);
   const [campList, setCampList] = useState([]);
@@ -60,12 +64,14 @@ const Request = () => {
   const [editId, setEditId] = useState("");
 
   const [requestStatus, setRequestStatus] = useState("");
+  const [userComment, setUserComment] = useState('')
 
   // for filter result
 
   const [filterBy, setFilterBy] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handelAddRequest = () => {
     setAddRequestModel(true);
@@ -136,8 +142,8 @@ const Request = () => {
         setCampName(requestData.camp_name);
         setRepId(requestData.rep_id);
         setRepName(requestData.rep_name);
-        setRepEmail(requestData.rep_email);
-        setRepMobile(requestData.rep_contact);
+        //setRepEmail(requestData.rep_email);
+        //setRepMobile(requestData.rep_contact);
         setAbmContact(requestData.abm_contact);
         setDoctorId(requestData.cdoc_id);
         setDoctorName(requestData.doctor_name);
@@ -150,8 +156,8 @@ const Request = () => {
         setCampTime(requestData.camp_time);
         setCampPatients(requestData.no_of_patients);
         setRepZone(requestData.zone);
-        setRepHq(requestData.state);
-        setRepState(requestData.hq);
+        setRepHq(requestData.hq);
+        //setRepState(requestData.hq);
         setMarketingHeadId(requestData.mhid);
         setMarketingHeadEamil(requestData.email);
         // Open the edit modal
@@ -210,6 +216,7 @@ const Request = () => {
 
   //  for showing dashboard list
   const getCampRequestList = async () => {
+    setLoading(true);
     try {
       const res = await axios.post(
         `${BASEURL}/campRequest/getCampRequest?searchName=${searchQuery}`,
@@ -229,11 +236,29 @@ const Request = () => {
     } catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
   useEffect(() => {
-    getCampRequestList();
-  }, [listCampType, searchQuery, filterBy, startDate, endDate]);
+
+    if(searchQuery){
+      let timer =setTimeout(()=>{
+        getCampRequestList();
+      },2000)
+      
+      return ()=>{
+        clearTimeout(timer)
+      }
+    }
+    else{
+      getCampRequestList();
+    }
+  }, [listCampType, filterBy, searchQuery, startDate, endDate]);
+
+
+
 
   // for get camp type
 
@@ -248,7 +273,7 @@ const Request = () => {
 
   const getRepresentativeList = async () => {
     try {
-      const res = await axios.get(`${BASEURL}/report/getRepresentative`);
+      const res = await axios.post(`${BASEURL}/report/getRepresentative`,{empId,role});
       setRepresentativeList(res?.data?.data);
     } catch (error) {
       console.log(error);
@@ -266,7 +291,7 @@ const Request = () => {
 
   const getDoctor = async () => {
     try {
-      const res = await axios.get(`${BASEURL}/report/getDoctor`);
+      const res = await axios.post(`${BASEURL}/report/getDoctor`,{empId,role});
       setDoctorList(res?.data?.data);
     } catch (error) {
       console.log(error);
@@ -380,7 +405,7 @@ const Request = () => {
       !abmContact ||
       !repZone ||
       !repHq ||
-      !repState ||
+      // !repState ||
       !marketingHeadEmail
     ) {
       toast.error("Missing Required Field");
@@ -399,8 +424,8 @@ const Request = () => {
         campName: campName,
         repId: repId,
         repName: repName,
-        repContact: repMobile,
-        repEmail: repEmail,
+        // repContact: repMobile,
+        // repEmail: repEmail,
         docId: doctorId,
         doctorName: doctorName,
         docDegree: doctorQualification,
@@ -412,12 +437,13 @@ const Request = () => {
         campTime: campTime,
         patientsNo: campPatients,
         zone: repZone,
-        state: repState,
+        // state: repState,
         hq: repHq,
         abmContact: abmContact,
         marketingHeadEmail: marketingHeadEmail,
         marketingHeadId: marketingHeadId,
         userId: userId,
+        userMail
       });
 
       if (res?.data?.errorCode == "1") {
@@ -428,8 +454,8 @@ const Request = () => {
         setCampName("");
         setRepId("");
         setRepName("");
-        setRepMobile("");
-        setRepEmail("");
+       // setRepMobile("");
+       // setRepEmail("");
         setDoctorId("");
         setDoctorName("");
         setDoctorQualification("");
@@ -442,7 +468,7 @@ const Request = () => {
         setCampPatients("");
         setRepZone("");
         setRepHq("");
-        setRepState("");
+      //  setRepState("");
         setAbmContact("");
         setMarketingHeadEamil("");
         setMarketingHeadId("");
@@ -475,11 +501,15 @@ const Request = () => {
       !abmContact ||
       !repZone ||
       !repHq ||
-      !repState ||
+      //!repState ||
       !marketingHeadEmail
     ) {
       toast.error("Missing Required Field");
       //alert("Missing Required Field")
+      return;
+    }
+    if(!userComment){
+      toast.error("Enter Reason for edit");
       return;
     }
     setIsLoading(true);
@@ -491,8 +521,8 @@ const Request = () => {
           campName: campName,
           repId: repId,
           repName: repName,
-          repContact: repMobile,
-          repEmail: repEmail,
+          //repContact: repMobile,
+         // repEmail: repEmail,
           docId: doctorId,
           doctorName: doctorName,
           docDegree: doctorQualification,
@@ -504,12 +534,14 @@ const Request = () => {
           campTime: campTime,
           patientsNo: campPatients,
           zone: repZone,
-          state: repState,
+         // state: repState,
           hq: repHq,
           abmContact: abmContact,
           marketingHeadEmail: marketingHeadEmail,
           marketingHeadId: marketingHeadId,
+          userComment:userComment,
           userId: userId,
+          userMail,
           campReqId: editId,
         }
       );
@@ -523,8 +555,8 @@ const Request = () => {
         setCampName("");
         setRepId("");
         setRepName("");
-        setRepMobile("");
-        setRepEmail("");
+       // setRepMobile("");
+        // setRepEmail("");
         setDoctorId("");
         setDoctorName("");
         setDoctorQualification("");
@@ -537,10 +569,11 @@ const Request = () => {
         setCampPatients("");
         setRepZone("");
         setRepHq("");
-        setRepState("");
+       // setRepState("");
         setAbmContact("");
         setMarketingHeadEamil("");
         setMarketingHeadId("");
+        setUserComment('');
       }
     } catch (error) {
       alert("Error In Updating Camp Request");
@@ -579,29 +612,81 @@ const Request = () => {
   const selectPageHandler = (selectedPage) => {
     if (
       selectedPage >= 1 &&
-      selectedPage <= Math.ceil(campRequestList.length / 5) &&
+      selectedPage <= Math.ceil(campRequestList.length / PageCount) &&
       page !== selectedPage
     )
       setPage(selectedPage);
+  };
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(campRequestList.length / PageCount);
+    const pageNumbers = [];
+    const maxPageNumbersToShow = PageCount;
+
+    if (totalPages <= maxPageNumbersToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(2, page - 2);
+      const endPage = Math.min(totalPages - 1, page + 2);
+
+      pageNumbers.push(1);
+      if (startPage > 2) {
+        pageNumbers.push("...");
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      if (endPage < totalPages - 1) {
+        pageNumbers.push("...");
+      }
+      pageNumbers.push(totalPages);
+    }
+
+    return pageNumbers.map((pageNum, index) =>
+      pageNum === "..." ? (
+        <li className="page-item" key={index}>
+          <span className="page-link">{pageNum}</span>
+        </li>
+      ) : (
+        <li
+          className={`page-item ${page === pageNum ? "active" : ""}`}
+          onClick={() => selectPageHandler(pageNum)}
+          key={pageNum}
+        >
+          <span className="page-link">{pageNum}</span>
+        </li>
+      )
+    );
   };
 
   const handelReportDownload = () => {
     // Define custom column headers
     console.log(campRequestList);
     const headers = [
+      "Camp Request Id",
+      "Doctor UIN Number",
       "Doctor Name",
       "PathLab Name",
-      "Representative Name",
+      "Camp Name",
       "Camp Date",
       "Camp Venue",
+      "Representative Name",
+      "Hq",
+      "Zone"
     ];
 
     const mappedData = campRequestList.map((item) => ({
+      "Camp Request Id":item.camp_req_id,
+      "Doctor UIN Number":item.uin_number,
       "Doctor Name": item.doctor_name,
       "PathLab Name": item.pathlab_name,
-      "Representative Name": item.rep_name,
+      "Camp Name":item.camp_name,
       "Camp Date": item.camp_date,
       "Camp Venue": item.camp_venue,
+      "Representative Name": item.rep_name,
+      "Hq":item.hq,
+      "Zone":item.zone
     }));
 
     const ws = XLSX.utils.json_to_sheet(mappedData, { header: headers });
@@ -611,7 +696,9 @@ const Request = () => {
     XLSX.writeFile(wb, `Lupin_AllRequest_${rn}.xlsx`);
   };
 
-  return (
+  console.log("info data", infoData);
+
+  return loading ? <Loader/> : (
     <>
       <main id="main" className="main">
         {/* <div className="pagetitle">
@@ -629,6 +716,7 @@ const Request = () => {
                     placeholder="Search."
                     aria-label="Search."
                     aria-describedby="basic-addon2"
+                    value={searchQuery}
                     onChange={handleSearchChange}
                   />
                   <span className="input-group-text" id="basic-addon2">
@@ -724,6 +812,8 @@ const Request = () => {
                     <table className="table table-hover newcss">
                       <thead>
                         <tr>
+                          <th scope="col">Request Id</th>
+                          <th scope="col">Doctor UIN</th>
                           <th scope="col">Doctor Name</th>
                           <th scope="col">Rep Name</th>
                           <th scope="col">Pathlab Name</th>
@@ -737,9 +827,11 @@ const Request = () => {
                         {campRequestList &&
                           campRequestList.length > 0 &&
                           campRequestList
-                            .slice(page * 5 - 5, page * 5)
+                            .slice(page * PageCount - PageCount, page * PageCount)
                             .map((e) => (
                               <tr key={e.camp_req_id}>
+                                <td>{e.camp_req_id}</td>
+                                <td>{e.uin_number}</td>
                                 <td>{e.doctor_name}</td>
                                 <td>{e.rep_name}</td>
                                 <td>{e.pathlab_name}</td>
@@ -762,21 +854,21 @@ const Request = () => {
                                 </td>
                                 <td>
                                   <button
-                                    className="btn btn-info rounded-pill"
+                                    className="btn btn-info rounded-pill mb-1"
                                     title="Info"
                                     onClick={() => handelInfo(e.camp_req_id)}
                                   >
                                     <i className="ri-information-2-line"></i>
                                   </button>
                                   <button
-                                    className="btn btn-dark rounded-pill ml-1"
+                                    className="btn btn-dark rounded-pill ml-1 mb-1"
                                     title="Edit"
                                     onClick={() => handleEdit(e.camp_req_id)}
                                   >
                                     <i className="ri-edit-2-fill"></i>
                                   </button>
                                   <button
-                                    className="btn btn-danger rounded-pill ml-1"
+                                    className="btn btn-danger rounded-pill ml-1 mb-1"
                                     title="Delete"
                                     onClick={() => handelDelete(e.camp_req_id)}
                                   >
@@ -804,7 +896,8 @@ const Request = () => {
                                 <span aria-hidden="true">&laquo;</span>
                               </span>
                             </li>
-                            {[
+                            {renderPageNumbers()}
+                            {/* {[
                               ...Array(Math.ceil(campRequestList.length / 5)),
                             ].map((_, i) => {
                               return (
@@ -822,7 +915,7 @@ const Request = () => {
                                   </span>
                                 </li>
                               );
-                            })}
+                            })} */}
                             {/* <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className="page-link" >{i+1}</span></li> */}
                             <li
                               className="page-item"
@@ -843,188 +936,6 @@ const Request = () => {
           </div>
         </section>
       </main>
-
-      {/* {infoRequestModel && (
-        <div className="addusermodel">
-          <div className="modal fade show" style={{ display: "block" }}>
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Request Info</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handelCloseInfoModel}
-                  ></button>
-                </div>
-                <div className="modal-body p-4">
-                  <form className="row g-3">
-                    <div className="col-md-4">
-                      <label className="form-group form-label">
-                        Type of Camp
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Type"
-                        value={infoData && infoData.camp_name}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Pathlab</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Pathlab Name"
-                        value={infoData && infoData.pathlab_name}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Representative Name"
-                        value={infoData && infoData.rep_name}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Contact No Of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Contact No"
-                        value={infoData && infoData.rep_contact}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Email Id of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Email"
-                        value={infoData && infoData.rep_email}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Zone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Zone"
-                        value={infoData && infoData.zone}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="State"
-                        value={infoData && infoData.state}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Hq</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Hq"
-                        value={infoData && infoData.hq}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Name of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Name"
-                        value={infoData && infoData.doctor_name}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Degree of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Degree"
-                        value={infoData && infoData.doctor_qualification}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Date of Camp</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Date"
-                        value={infoData && infoData.camp_date}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Time of Camp</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        placeholder="Camp Time"
-                        value={infoData && infoData.camp_time}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Camp Venue</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Camp Venue"
-                        value={infoData && infoData.camp_venue}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">
-                        No. of Patients Expected
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Patient No"
-                        value={infoData && infoData.no_of_patients}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label className="form-label">Contact No. of ABM</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Contact No"
-                        value={infoData && infoData.abm_contact}
-                        readOnly
-                      />
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
 
      {infoRequestModel && (
         <div className="addusermodel">
@@ -1072,9 +983,9 @@ const Request = () => {
                         value={infoData && infoData.rep_name}
                         readOnly
                       />
-                      <label className="form-label did-floating-label">Name of Rep</label>
+                      <label className="form-label did-floating-label">Name of Representative</label>
                     </div>
-                    <div className="col-md-4 did-floating-label-content">
+                    {/* <div className="col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -1093,7 +1004,7 @@ const Request = () => {
                         readOnly
                       />
                       <label className="form-label did-floating-label">Email Id of Rep</label>
-                    </div>
+                    </div> */}
 
                     <div className="col-md-4 did-floating-label-content">
                       <input
@@ -1105,7 +1016,7 @@ const Request = () => {
                       />
                       <label className="form-label did-floating-label">Zone</label>
                     </div>
-                    <div className="col-md-4 did-floating-label-content">
+                    {/* <div className="col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -1114,7 +1025,7 @@ const Request = () => {
                         readOnly
                       />
                       <label className="form-label did-floating-label">State</label>
-                    </div>
+                    </div> */}
                     <div className="col-md-4 did-floating-label-content">
                       <input
                         type="text"
@@ -1202,6 +1113,46 @@ const Request = () => {
                       />
                       <label className="form-label did-floating-label">Contact No. of ABM</label>
                     </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Reason For Edit"
+                        value={infoData && infoData.userComment}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Reason For Edit</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Edit Count"
+                        value={infoData && infoData.editCount}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Edit Count</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Modified Date"
+                        value={infoData && infoData.modified_date === "Invalid date" ?"Modified Date": infoData.modified_date}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Modified Date</label>
+                    </div>
+                    <div className="col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        placeholder="Marketing Head Comment"
+                        value={infoData && infoData.adminComment}
+                        readOnly
+                      />
+                      <label className="form-label did-floating-label">Marketing Head Comment</label>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -1210,284 +1161,7 @@ const Request = () => {
         </div>
       )}
 
-      {/* {addRequestModel && (
-        <div className="addusermodel">
-          <div className="modal fade show" style={{ display: "block" }}>
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Add Request</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handelCloseModel}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form className="row g-3" onSubmit={handleAddSubmit}>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Type of Camp</label>
-                      <select
-                        className="form-control"
-                        onChange={(event) => {
-                          setCampName(
-                            event.target.options[
-                              event.target.selectedIndex
-                            ].getAttribute("data-campname")
-                          );
-                          setCampType(event.target.value);
-                        }}
-                        value={campType}
-                      >
-                        <option value="">Select...</option>
-                        {campList.map((e) => (
-                          <option
-                            data-campname={e.camp_name}
-                            key={e.camp_id}
-                            value={e.camp_id}
-                          >
-                            {e.camp_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Pathlab</label>
-                      <select
-                        className="form-control"
-                        
-
-                        onChange={handelPathlabChange}
-                        value={pathlab}
-                      >
-                        <option value="">Select...</option>
-                        {pathlabList.map((e) => (
-                          <option key={e.pathlab_id} value={e.pathlab_id}>
-                            {e.pathlab_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        Name of Marketing Head
-                      </label>
-                      <select
-                        className="form-control"
-                        onChange={(e) => {
-                          setMarketingHeadEamil(
-                            e.target.options[
-                              e.target.selectedIndex
-                            ].getAttribute("data-email")
-                          );
-
-                          setMarketingHeadId(e.target.value);
-                        }}
-                        value={marketingHeadId}
-                      >
-                        <option value="">Select...</option>
-                        {marketingHeadList.map((e) => (
-                          <option
-                            data-email={e.email}
-                            key={e.mhid}
-                            value={e.mhid}
-                          >
-                            {e.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Rep</label>
-                      <select
-                        className="form-control"
-                        onChange={handelRepresentativeChange}
-                        value={repId}
-                      >
-                        <option value="">Select...</option>
-                        {representativeList.map((e) => (
-                          <option key={e.rep_id} value={e.rep_id}>
-                            {e.rep_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Contact No Of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="contact"
-                        value={repMobile}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Email Id of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="email"
-                        value={repEmail}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Zone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="zone"
-                        onChange={(e) => {
-                          setRepZone(e.target.value);
-                        }}
-                        value={repZone}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="state"
-                        onChange={(e) => {
-                          setRepState(e.target.value);
-                        }}
-                        value={repState}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Hq</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setRepHq(e.target.value);
-                        }}
-                        placeholder="Hq"
-                        value={repHq}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Doctor</label>
-                      <select
-                        className="form-control"
-                        onChange={handelDoctorChange}
-                        value={doctorId}
-                      >
-                        <option value="">Select...</option>
-                        {doctorList.map((e) => (
-                          <option key={e.cdoc_id} value={e.cdoc_id}>
-                            {e.doctor_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Degree of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Degree"
-                        value={doctorQualification}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Date of Camp</label>
-                      <input
-                        type="date"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampDate(e.target.value);
-                        }}
-                        placeholder="Camp Date"
-                        value={campDate}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Time of Camp</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampTime(e.target.value);
-                        }}
-                        placeholder="Camp Time"
-                        value={campTime}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Camp Venue</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampVenue(e.target.value);
-                        }}
-                        placeholder="Camp Venue"
-                        value={campVenue}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        No. of Patients Expected
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampPatients(e.target.value);
-                        }}
-                        placeholder="Patients No."
-                        value={campPatients}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Contact No of ABM</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Contact No."
-                        onChange={(e) => {
-                          setAbmContact(e.target.value);
-                        }}
-                        value={abmContact}
-                      />
-                    </div>
-                  
-                    <div className="text-center">
-                      {isLoading ? (
-                        <ThreeDots
-                          visible={true}
-                          height="80"
-                          width="80"
-                          color="#4fa94d"
-                          radius="9"
-                          ariaLabel="three-dots-loading"
-                          wrapperStyle={{ justifyContent: "center" }}
-                          wrapperClass="mx-auto"
-                        />
-                      ) : (
-                        <button
-                          type="submit"
-                          className="btn btn-success mx-auto"
-                        >
-                          Submit
-                        </button>
-                      )}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
-
+    
      {addRequestModel && (
         <div className="addusermodel">
           <div className="modal fade show" style={{ display: "block" }}>
@@ -1589,9 +1263,9 @@ const Request = () => {
                           </option>
                         ))}
                       </select>
-                        <label className="form-label did-floating-label">Name of Rep</label>
+                        <label className="form-label did-floating-label">Name of Representative</label>
                     </div>
-                    <div className="form-group col-md-4 did-floating-label-content">
+                    {/* <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -1610,7 +1284,7 @@ const Request = () => {
                         readOnly
                       />
                       <label className="form-label did-floating-label">Email Id of Rep</label>
-                    </div>
+                    </div> */}
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
@@ -1623,7 +1297,7 @@ const Request = () => {
                       />
                         <label className="form-label did-floating-label">Zone</label>
                     </div>
-                    <div className="form-group col-md-4 did-floating-label-content">
+                    {/* <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -1634,7 +1308,7 @@ const Request = () => {
                         value={repState}
                       />
                         <label className="form-label did-floating-label">State</label>
-                    </div>
+                    </div> */}
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
@@ -1774,293 +1448,7 @@ const Request = () => {
         </div>
       )}
 
-      {/* {editRequestModel && (
-        <div className="addusermodel">
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-            id="ExtralargeModal"
-          >
-            <div className="modal-dialog modal-xl">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Edit Request</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handelCloseEditModel}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form className="row g-3" onSubmit={handleEditSubmit}>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Type of Camp</label>
-                      <select
-                        className="form-control"
-                        onChange={(event) => {
-                          setCampType(event.target.value);
-                          setCampName(
-                            event.target.options[
-                              event.target.selectedIndex
-                            ].getAttribute("data-campname")
-                          );
-                        }}
-                        value={campType}
-                      >
-                        <option value="">Select...</option>
-                        {campList.map((e) => (
-                          <option
-                            data-campname={e.camp_name}
-                            key={e.camp_id}
-                            value={e.camp_id}
-                          >
-                            {e.camp_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Pathlab</label>
-                      <select
-                        className="form-control"
-                        //  onChange={(e)=>{
-                        //   setPathlab(e.target.value)
-                        // }}
-                        onChange={handelPathlabChange}
-                        value={pathlab}
-                      >
-                        <option value="">Select...</option>
-                        {pathlabList.map((e) => (
-                          <option key={e.pathlab_id} value={e.pathlab_id}>
-                            {e.pathlab_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        Name of Marketing Head
-                      </label>
-                      <select
-                        className="form-control"
-                        onChange={(e) => {
-                          setMarketingHeadEamil(
-                            e.target.options[
-                              e.target.selectedIndex
-                            ].getAttribute("data-email")
-                          );
-
-                          setMarketingHeadId(e.target.value);
-                        }}
-                        value={marketingHeadId}
-                      >
-                        <option value="">Select...</option>
-                        {marketingHeadList.map((e) => (
-                          <option
-                            data-email={e.email}
-                            key={e.mhid}
-                            value={e.mhid}
-                          >
-                            {e.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Rep</label>
-                      <select
-                        className="form-control"
-                        onChange={handelRepresentativeChange}
-                        value={repId}
-                      >
-                        <option value="">Select...</option>
-                        {representativeList.map((e) => (
-                          <option key={e.rep_id} value={e.rep_id}>
-                            {e.rep_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Contact No Of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="contact"
-                        value={repMobile}
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Email Id of Rep</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="email"
-                        value={repEmail}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Zone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="zone"
-                        onChange={(e) => {
-                          setRepZone(e.target.value);
-                        }}
-                        value={repZone}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="state"
-                        onChange={(e) => {
-                          setRepState(e.target.value);
-                        }}
-                        value={repState}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Hq</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setRepHq(e.target.value);
-                        }}
-                        placeholder="Hq"
-                        value={repHq}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Name of Doctor</label>
-                      <select
-                        className="form-control"
-                        onChange={handelDoctorChange}
-                        value={doctorId}
-                      >
-                        <option value="">Select...</option>
-                        {doctorList.map((e) => (
-                          <option key={e.cdoc_id} value={e.cdoc_id}>
-                            {e.doctor_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Degree of Doctor</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Doctor Degree"
-                        value={doctorQualification}
-                        readOnly
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Date of Camp</label>
-                      <input
-                        type="date"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampDate(e.target.value);
-                        }}
-                        placeholder="Camp Date"
-                        value={campDate}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Time of Camp</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampTime(e.target.value);
-                        }}
-                        placeholder="Camp Time"
-                        value={campTime}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Camp Venue</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampVenue(e.target.value);
-                        }}
-                        placeholder="Camp Venue"
-                        value={campVenue}
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label className="form-label">
-                        No. of Patients Expected
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCampPatients(e.target.value);
-                        }}
-                        placeholder="Patients No."
-                        value={campPatients}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-4">
-                      <label className="form-label">Contact No of ABM</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Contact No."
-                        onChange={(e) => {
-                          setAbmContact(e.target.value);
-                        }}
-                        value={abmContact}
-                      />
-                    </div>
-                    <div className="text-center">
-                      {isLoading ? (
-                        <ThreeDots
-                          visible={true}
-                          height="80"
-                          width="80"
-                          color="#4fa94d"
-                          radius="9"
-                          ariaLabel="three-dots-loading"
-                          wrapperStyle={{ justifyContent: "center" }}
-                          wrapperClass="mx-auto"
-                        />
-                      ) : (
-                        <button
-                          type="submit"
-                          className="btn btn-success mx-auto"
-                        >
-                          Submit
-                        </button>
-                      )}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
-
+     
 {editRequestModel && (
         <div className="addusermodel">
           <div
@@ -2170,9 +1558,9 @@ const Request = () => {
                           </option>
                         ))}
                       </select>
-                        <label className="form-label did-floating-label">Name of Rep</label>
+                        <label className="form-label did-floating-label">Name of Representative</label>
                     </div>
-                    <div className="form-group col-md-4 did-floating-label-content">
+                    {/* <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -2191,7 +1579,7 @@ const Request = () => {
                         readOnly
                       />
                       <label className="form-label did-floating-label">Email Id of Rep</label>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
@@ -2205,7 +1593,7 @@ const Request = () => {
                       />
                         <label className="form-label did-floating-label">Zone</label>
                     </div>
-                    <div className="form-group col-md-4 did-floating-label-content">
+                    {/* <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
                         className="form-control did-floating-input"
@@ -2216,7 +1604,7 @@ const Request = () => {
                         value={repState}
                       />
                         <label className="form-label did-floating-label">State</label>
-                    </div>
+                    </div> */}
                     <div className="form-group col-md-4 did-floating-label-content">
                       <input
                         type="text"
@@ -2323,6 +1711,18 @@ const Request = () => {
                         value={abmContact}
                       />
                         <label className="form-label did-floating-label">Contact No of ABM</label>
+                    </div>
+                    <div className="form-group col-md-4 did-floating-label-content">
+                      <input
+                        type="text"
+                        className="form-control did-floating-input"
+                        onChange={(e) => {
+                          setUserComment(e.target.value);
+                        }}
+                        placeholder="Comment"
+                        value={userComment}
+                      />
+                        <label className="form-label did-floating-label">Reason For Edit</label>
                     </div>
                     <div className="text-center">
                       {isLoading ? (

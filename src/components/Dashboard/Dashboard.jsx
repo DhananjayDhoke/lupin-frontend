@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx/xlsx.mjs";
 import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
-import { BASEURL } from "../constant/constant";
+import { BASEURL, PageCount } from "../constant/constant";
 import axios from "axios";
 import "./Dashboard.css";
+import Loader from "../utils/Loader";
 const Dashboard = () => {
   const userId = sessionStorage.getItem("userId");
   // data for select tag
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [listCampType, setListCampType] = useState("");
   const [campReportList, setCampReportList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false)
 
   // for filter result
 
@@ -22,6 +24,7 @@ const Dashboard = () => {
 
   //  for showing dashboard list
   const getCampReportList = async () => {
+    setLoading(true)
     try {
       const res = await axios.post(
         `${BASEURL}/report/getAllCampReport?searchName=${searchQuery}`,
@@ -40,10 +43,24 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
   useEffect(() => {
-    getCampReportList();
+    if(searchQuery){
+      let timer =setTimeout(()=>{
+        getCampReportList();
+      },2000)
+      
+      return ()=>{
+        clearTimeout(timer)
+      }
+    }
+    else{
+      getCampReportList();
+    }
   }, [listCampType, searchQuery, filterBy, startDate, endDate]);
 
   // for get camp type
@@ -182,6 +199,8 @@ const Dashboard = () => {
   const handelReportDownload = () => {
     // Define custom column headers
     const headers = [
+      "Camp Report Id",
+      "Doctor UIN Number",
       "Doctor Name",
       "PathLab Name",
       "Camp Name",
@@ -196,6 +215,8 @@ const Dashboard = () => {
 
     // Map the data to match the custom column headers
     const mappedData = campReportList.map((item) => ({
+      "Camp Report Id":item.crid,
+      "Doctor UIN Number":item.uin_number,
       "Doctor Name": item.doctor_name,
       "PathLab Name": item.pathlab_name,
       "Camp Name": item.camp_name,
@@ -221,6 +242,8 @@ const Dashboard = () => {
     });
     // Define custom column headers
     const headers = [
+      "Camp Report Id",
+      "Doctor UIN Number",
       "Doctor Name",
       "PathLab Name",
       "Camp Name",
@@ -235,6 +258,8 @@ const Dashboard = () => {
 
     // Map the data to match the custom column headers
     const mappedData = filterData.map((item) => ({
+      "Camp Report Id":item.crid,
+      "Doctor UIN Number":item.uin_number,
       "Doctor Name": item.doctor_name,
       "PathLab Name": item.pathlab_name,
       "Camp Name": item.camp_name,
@@ -265,13 +290,56 @@ const Dashboard = () => {
   const selectPageHandler = (selectedPage) => {
     if (
       selectedPage >= 1 &&
-      selectedPage <= Math.ceil(campReportList.length / 5) &&
+      selectedPage <= Math.ceil(campReportList.length / PageCount) &&
       page !== selectedPage
     )
       setPage(selectedPage);
   };
 
-  return (
+    const renderPageNumbers = () => {
+    const totalPages = Math.ceil(campReportList.length / PageCount);
+    const pageNumbers = [];
+    const maxPageNumbersToShow = PageCount;
+
+    if (totalPages <= maxPageNumbersToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(2, page - 2);
+      const endPage = Math.min(totalPages - 1, page + 2);
+
+      pageNumbers.push(1);
+      if (startPage > 2) {
+        pageNumbers.push("...");
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      if (endPage < totalPages - 1) {
+        pageNumbers.push("...");
+      }
+      pageNumbers.push(totalPages);
+    }
+
+    return pageNumbers.map((pageNum, index) =>
+      pageNum === "..." ? (
+        <li className="page-item" key={index}>
+          <span className="page-link">{pageNum}</span>
+        </li>
+      ) : (
+        <li
+          className={`page-item ${page === pageNum ? "active" : ""}`}
+          onClick={() => selectPageHandler(pageNum)}
+          key={pageNum}
+        >
+          <span className="page-link">{pageNum}</span>
+        </li>
+      )
+    );
+  };
+
+  return loading ? <Loader/> : (
     <div>
       <main id="main" className="main">
         {/* <div className="pagetitle">
@@ -292,6 +360,7 @@ const Dashboard = () => {
                     placeholder="Search."
                     aria-label="Search."
                     aria-describedby="basic-addon2"
+                    value={searchQuery}
                     onChange={handleSearchChange}
                   />
                   <span className="input-group-text" id="basic-addon2">
@@ -367,6 +436,8 @@ const Dashboard = () => {
                     <table className="table table-striped newcss">
                       <thead>
                         <tr>
+                          <th>Report Id</th>
+                          <th>Doctor Id</th>
                           <th>Doctor Name</th>
                           <th>Rep Name</th>
                           <th>Pathlab Name</th>
@@ -379,9 +450,11 @@ const Dashboard = () => {
                         {campReportList &&
                           campReportList.length > 0 &&
                           campReportList
-                            .slice(page * 5 - 5, page * 5)
+                            .slice(page * PageCount - PageCount, page * PageCount)
                             .map((e) => (
                               <tr key={e.crid}>
+                                <td>{e.crid}</td>
+                                <td>{e.uin_number}</td>
                                 <td>{e.doctor_name}</td>
                                 <td>{e.rep_name}</td>
                                 <td>{e.pathlab_name}</td>
@@ -434,7 +507,9 @@ const Dashboard = () => {
                                 <span aria-hidden="true">&laquo;</span>
                               </span>
                             </li>
-                            {[
+
+                            {renderPageNumbers()}
+                            {/* {[
                               ...Array(Math.ceil(campReportList.length / 5)),
                             ].map((_, i) => {
                               return (
@@ -452,7 +527,7 @@ const Dashboard = () => {
                                   </span>
                                 </li>
                               );
-                            })}
+                            })} */}
                             {/* <li className="page-item" onClick={()=>selectPageHandler(i+1)} key={i}><span className="page-link" >{i+1}</span></li> */}
                             <li
                               className="page-item"
