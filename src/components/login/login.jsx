@@ -55,7 +55,7 @@ const Login = () => {
                     style={{ backgroundColor: "#46c5f5", borderRadius: "5px" }}
                   >
                     <div className="d-flex justify-content-center py-4">
-                      <div className="logo d-flex align-items-center w-auto">
+                      <div className="logo1 d-flex align-items-center w-auto">
                         <img src="/images/logo.png" alt="Logo" />
                       </div>
                     </div>
