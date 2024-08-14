@@ -30,8 +30,8 @@ const Login = () => {
         sessionStorage.setItem("empId", empId);
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("sessionId", sessionId);
-        sessionStorage.setItem("email",email);
-        sessionStorage.setItem("role",role);
+        sessionStorage.setItem("email", email);
+        sessionStorage.setItem("role", role);
         navigate("/dashboard");
       } else {
         //console.log("details",res.response.data.details)
@@ -52,7 +52,7 @@ const Login = () => {
                 <div className="card mb-3">
                   <div
                     className="card-body"
-                    style={{ backgroundColor: "#b1e9b1", borderRadius: "5px" }}
+                    style={{ backgroundColor: "#46c5f5", borderRadius: "5px" }}
                   >
                     <div className="d-flex justify-content-center py-4">
                       <div className="logo d-flex align-items-center w-auto">

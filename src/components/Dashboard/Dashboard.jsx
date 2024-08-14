@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [listCampType, setListCampType] = useState("");
   const [campReportList, setCampReportList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   // for filter result
 
@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   //  for showing dashboard list
   const getCampReportList = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.post(
         `${BASEURL}/report/getAllCampReport?searchName=${searchQuery}`,
@@ -42,23 +42,21 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.log(error);
-    }
-    finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if(searchQuery){
-      let timer =setTimeout(()=>{
+    if (searchQuery) {
+      let timer = setTimeout(() => {
         getCampReportList();
-      },2000)
-      
-      return ()=>{
-        clearTimeout(timer)
-      }
-    }
-    else{
+      }, 2000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    } else {
       getCampReportList();
     }
   }, [listCampType, searchQuery, filterBy, startDate, endDate]);
@@ -89,15 +87,15 @@ const Dashboard = () => {
     datasets: [
       {
         label: "Camp Request Count",
-        backgroundColor: "#99c2a2",
-        borderColor: "#99c2a2",
+        backgroundColor: "#16aef1",
+        borderColor: "#16aef1",
         borderWidth: 2,
         data: [],
       },
       {
         label: "Camp Report Count",
-        backgroundColor: "#5b8266",
-        borderColor: "#5b8266",
+        backgroundColor: "#0c7ec9",
+        borderColor: "#0c7ec9",
         borderWidth: 2,
         data: [],
       },
@@ -215,8 +213,8 @@ const Dashboard = () => {
 
     // Map the data to match the custom column headers
     const mappedData = campReportList.map((item) => ({
-      "Camp Report Id":item.crid,
-      "Doctor UIN Number":item.uin_number,
+      "Camp Report Id": item.crid,
+      "Doctor UIN Number": item.uin_number,
       "Doctor Name": item.doctor_name,
       "PathLab Name": item.pathlab_name,
       "Camp Name": item.camp_name,
@@ -258,8 +256,8 @@ const Dashboard = () => {
 
     // Map the data to match the custom column headers
     const mappedData = filterData.map((item) => ({
-      "Camp Report Id":item.crid,
-      "Doctor UIN Number":item.uin_number,
+      "Camp Report Id": item.crid,
+      "Doctor UIN Number": item.uin_number,
       "Doctor Name": item.doctor_name,
       "PathLab Name": item.pathlab_name,
       "Camp Name": item.camp_name,
@@ -296,7 +294,7 @@ const Dashboard = () => {
       setPage(selectedPage);
   };
 
-    const renderPageNumbers = () => {
+  const renderPageNumbers = () => {
     const totalPages = Math.ceil(campReportList.length / PageCount);
     const pageNumbers = [];
     const maxPageNumbersToShow = PageCount;
@@ -339,7 +337,9 @@ const Dashboard = () => {
     );
   };
 
-  return loading ? <Loader/> : (
+  return loading ? (
+    <Loader />
+  ) : (
     <div>
       <main id="main" className="main">
         {/* <div className="pagetitle">
@@ -450,7 +450,10 @@ const Dashboard = () => {
                         {campReportList &&
                           campReportList.length > 0 &&
                           campReportList
-                            .slice(page * PageCount - PageCount, page * PageCount)
+                            .slice(
+                              page * PageCount - PageCount,
+                              page * PageCount
+                            )
                             .map((e) => (
                               <tr key={e.crid}>
                                 <td>{e.crid}</td>

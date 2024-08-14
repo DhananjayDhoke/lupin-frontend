@@ -18,13 +18,13 @@ body {
   background: #f6f9ff;
   color: #444444;
 }
-.newcss th{
-  background-color: #00a237 !important;
-  background-image: linear-gradient(to bottom,#02832d ,#023513 );
+.newcss th {
+  background-color: #2f2483 !important;
+  background-image: linear-gradient(to bottom, #009ee3, #2f2483);
   color: #fff !important;
 }
 a {
-  color: #00a237;
+  color: #2f2483;
   text-decoration: none;
 }
 
@@ -81,7 +81,7 @@ h6 {
   right: 15px;
   bottom: 15px;
   z-index: 99999;
-  background: #00a237;
+  background: #2f2483;
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -299,7 +299,7 @@ h6 {
 
 .accordion-flush .accordion-button:not(.collapsed) {
   box-shadow: none;
-  color: #00a237;
+  color: #2f2483;
 }
 
 .accordion-flush .accordion-body {
@@ -347,13 +347,13 @@ h6 {
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-  color: #00a237;
+  color: #2f2483;
 }
 
 .nav-tabs-bordered .nav-link.active {
   background-color: #fff;
-  color: #00a237;
-  border-bottom: 2px solid #00a237;
+  color: #2f2483;
+  border-bottom: 2px solid #2f2483;
 }
 
 /*--------------------------------------------------------------
@@ -370,7 +370,10 @@ h6 {
 }
 
 .logo img {
-  max-height: 90px;
+  max-height: 50px;
+  background-color: #fff;
+  border-radius: 0.4em;
+  padding: 3px;
   margin-right: 6px;
 }
 
@@ -386,8 +389,8 @@ h6 {
   z-index: 997;
   height: 60px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
-  background-color: #00a237;
-  background-image: linear-gradient(to bottom,#023D54,#006600);
+  background-color: #2f2483;
+  background-image: linear-gradient(to bottom, #2f2483, #009ee3);
   padding-left: 20px;
   /* Toggle Sidebar Button */
   /* Search Bar */
@@ -467,7 +470,7 @@ h6 {
   list-style: none;
 }
 
-.header-nav>ul {
+.header-nav > ul {
   margin: 0;
   padding: 0;
 }
@@ -617,7 +620,7 @@ h6 {
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #024a1a;
-  background-image: linear-gradient(to bottom,#024a1a,#030805);
+  background-image: linear-gradient(to bottom, #009ee3, #030805);
 }
 
 @media (max-width: 1199px) {
@@ -637,7 +640,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   #main,
   #footer {
     margin-left: 300px;
@@ -651,7 +653,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
     margin-left: 0;
@@ -693,8 +694,8 @@ h6 {
   font-weight: 600;
   color: #fff;
   transition: 0.3;
-  background: #00a237;
-  background-image: linear-gradient(to right,#015f21 , #00a237 );
+
+  background-image: linear-gradient(to right, #2f2483, #0088c2);
   padding: 10px 15px;
   /* border-radius: 4px; */
 }
@@ -715,12 +716,12 @@ h6 {
 }
 
 .sidebar-nav .nav-link:hover {
-  color: #00a237;
+  color: #2f2483;
   background: #f6f9ff;
 }
 
 .sidebar-nav .nav-link:hover i {
-  color: #00a237;
+  color: #2f2483;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -758,11 +759,11 @@ h6 {
 
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-  color: #00a237;
+  color: #2f2483;
 }
 
 .sidebar-nav .nav-content a.active i {
-  background-color: #00a237;
+  background-color: #2f2483;
 }
 
 /*--------------------------------------------------------------
@@ -785,7 +786,7 @@ h6 {
 
 .dashboard .filter .icon:hover,
 .dashboard .filter .icon:focus {
-  color: #00a237;
+  color: #2f2483;
 }
 
 .dashboard .filter .dropdown-header {
@@ -829,7 +830,7 @@ h6 {
 }
 
 .dashboard .sales-card .card-icon {
-  color: #00a237;
+  color: #2f2483;
   background: #f6f6fe;
 }
 
@@ -891,7 +892,7 @@ h6 {
 }
 
 /* News & Updates */
-.dashboard .news .post-item+.post-item {
+.dashboard .news .post-item + .post-item {
   margin-top: 15px;
 }
 
@@ -914,7 +915,7 @@ h6 {
 }
 
 .dashboard .news h4 a:hover {
-  color: #00a237;
+  color: #2f2483;
 }
 
 .dashboard .news p {
@@ -1062,7 +1063,7 @@ h6 {
 .faq .basic h6 {
   font-size: 18px;
   font-weight: 600;
-  color: #00a237;
+  color: #2f2483;
 }
 
 .faq .basic p {
@@ -1079,7 +1080,7 @@ h6 {
 .contact .info-box i {
   font-size: 38px;
   line-height: 0;
-  color: #00a237;
+  color: #2f2483;
 }
 
 .contact .info-box h3 {
@@ -1146,7 +1147,7 @@ h6 {
 
 .contact .php-email-form input:focus,
 .contact .php-email-form textarea:focus {
-  border-color: #00a237;
+  border-color: #2f2483;
 }
 
 .contact .php-email-form input {
@@ -1157,8 +1158,8 @@ h6 {
   padding: 12px 15px;
 }
 
-.contact .php-email-form button[type=submit] {
-  background: #00a237;
+.contact .php-email-form button[type="submit"] {
+  background: #2f2483;
   border: 0;
   padding: 10px 30px;
   color: #fff;
@@ -1166,7 +1167,7 @@ h6 {
   border-radius: 4px;
 }
 
-.contact .php-email-form button[type=submit]:hover {
+.contact .php-email-form button[type="submit"]:hover {
   background: #5969f3;
 }
 
@@ -1190,7 +1191,7 @@ h6 {
 .error-404 h1 {
   font-size: 180px;
   font-weight: 700;
-  color: #00a237;
+  color: #2f2483;
   margin-bottom: 0;
   line-height: 150px;
 }
@@ -1255,25 +1256,25 @@ h6 {
   width: 100% !important;
   height: auto !important;
 }
-.toggle-sidebar-btn{
+.toggle-sidebar-btn {
   display: none;
 }
-.tbst{
-  overflow-x:auto;
+.tbst {
+  overflow-x: auto;
 }
 table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
-
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding: 8px;
 }
 @media (max-width: 767.98px) {
-  .toggle-sidebar-btn{
+  .toggle-sidebar-btn {
     display: block;
   }
   /* .table thead, .table tbody, .table tr, .table th, .table td {

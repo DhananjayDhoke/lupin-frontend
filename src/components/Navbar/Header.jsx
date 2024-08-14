@@ -7,15 +7,15 @@ import Sidebar from "./Sidebar";
 const Header = () => {
   const navigate = useNavigate();
 
-  const [toggleSideBar, setToggleSideBar] = useState(false)
+  const [toggleSideBar, setToggleSideBar] = useState(false);
 
   const sessionId = sessionStorage.getItem("sessionId");
   const handleLogout = async () => {
     sessionStorage.removeItem("IsUserLoggedIn");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("empId");
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('role');
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("role");
     navigate("/");
     try {
       console.log("first");
@@ -26,10 +26,10 @@ const Header = () => {
     }
   };
 
-  const handelSidebarChange =()=>{
-     setToggleSideBar(!toggleSideBar)
-  }
-  
+  const handelSidebarChange = () => {
+    setToggleSideBar(!toggleSideBar);
+  };
+
   return (
     <div>
       {/* ======= Header ======= */}
@@ -39,10 +39,13 @@ const Header = () => {
       >
         <div className="d-flex align-items-center justify-content-between">
           <Link to={"/dashboard"} className="logo d-flex align-items-center">
-            {/* <img src="assets/img/logo.png" alt=""> */}
-            <span className="d-none d-lg-block">Lupin</span>
+            <img src="assets/img/logo.png" alt="" />
+            {/* <span className="d-none d-lg-block">Lupin</span> */}
           </Link>
-          <i onClick={handelSidebarChange} className="bi bi-list toggle-sidebar-btn"></i>
+          <i
+            onClick={handelSidebarChange}
+            className="bi bi-list toggle-sidebar-btn"
+          ></i>
         </div>
         {/* End Logo */}
 
