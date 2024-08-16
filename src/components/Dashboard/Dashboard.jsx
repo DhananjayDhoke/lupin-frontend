@@ -87,15 +87,39 @@ const Dashboard = () => {
     datasets: [
       {
         label: "Camp Request Count",
-        backgroundColor: "#16aef1",
-        borderColor: "#16aef1",
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, "#fa3e5e");
+          gradient.addColorStop(1, "#781122"); // lighter shade towards the bottom
+          return gradient;
+        },
+        borderColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, "#fa3e5e");
+          gradient.addColorStop(1, "#781122"); // lighter shade towards the bottom
+          return gradient;
+        },
         borderWidth: 2,
         data: [],
       },
       {
         label: "Camp Report Count",
-        backgroundColor: "#0c7ec9",
-        borderColor: "#0c7ec9",
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, "#de4e35");
+          gradient.addColorStop(1, "#52170c"); // lighter shade towards the bottom
+          return gradient;
+        },
+        borderColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, "#de4e35");
+          gradient.addColorStop(1, "#52170c"); // lighter shade towards the bottom
+          return gradient;
+        },
         borderWidth: 2,
         data: [],
       },
